@@ -4,8 +4,8 @@ LESSCFLAGS = -x
 all: clean build
 
 clean:
-	rm -rf ./css
+	rm -rf ./static/css
 
 build:
-	mkdir css
-	$(LESSC) $(LESSCFLAGS) less/debuild.me.less > css/debuild.css
+	mkdir static/css
+	$(LESSC) $(LESSCFLAGS) less/debuild.me.less > static/css/debuild.css
