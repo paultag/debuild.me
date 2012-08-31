@@ -3,7 +3,7 @@
 # with the source of this application.
 
 from flask import Flask, render_template
-import humanize
+from monomoy.db import db
 
 app = Flask(__name__)
 
@@ -11,6 +11,14 @@ app = Flask(__name__)
 @app.route("/")
 def about():
     return render_template('about.html', **{})
+
+
+@app.route("/uploads")
+def uploads():
+    changes = db.changes.find()
+    return render_template('changes.html', **{
+        "changes": changes
+    })
 
 
 if __name__ == "__main__":

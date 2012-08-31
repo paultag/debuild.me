@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block content %}
+<ul>
+{% for change in changes %}
+    <li>{{change.source}}/{{change.version}}</li>
+{% endfor %}
+</ul>
+{% endblock %}
