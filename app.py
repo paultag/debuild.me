@@ -14,7 +14,7 @@ def about():
 
 
 @app.route("/packages")
-def uploads():
+def packages():
     packages = db.packages.find()
     return render_template('packages.html', **{
         "packages": packages
