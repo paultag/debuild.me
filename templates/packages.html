@@ -2,8 +2,8 @@
 
 {% block content %}
 <ul>
-{% for change in changes %}
-    <li>{{change.source}}/{{change.version}}</li>
+{% for package in packages %}
+    <li>{{package.name}}/{{package.version}}</li>
 {% endfor %}
 </ul>
 {% endblock %}

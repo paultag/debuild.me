@@ -3,7 +3,7 @@
 # with the source of this application.
 
 from flask import Flask, render_template
-from monomoy.db import db
+from monomoy.core import db
 
 app = Flask(__name__)
 
@@ -13,11 +13,11 @@ def about():
     return render_template('about.html', **{})
 
 
-@app.route("/uploads")
+@app.route("/packages")
 def uploads():
-    changes = db.changes.find()
-    return render_template('changes.html', **{
-        "changes": changes
+    packages = db.packages.find()
+    return render_template('packages.html', **{
+        "packages": packages
     })
 
 
