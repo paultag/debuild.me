@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h3>{{package.name}}/{{package.version}}</h3>
+This package was uploaded {{package.accepted_at|humanize_date}} by
+<a href = '{{url_for('user', user_id=user._id)}}' >{{user.first_name}} {{user.last_name}}</a>.
+
+<h4>Files included</h4>
+
+<table class = 'zebra' >
+    <tr>
+        <th>Filename</th>
+        <th>Size</th>
+    </tr>
+{% for file in package.changes.Files %}
+    <tr>
+        <td>{{file.name}}</td>
+        <td>{{file.size|humanize_size}}</td>
+    </tr>
+{% endfor %}
+</table>
+
+<h4>Changes</h4>
+<pre>{{package.changes.Changes}}</pre>
+{% endblock %}

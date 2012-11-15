@@ -2,10 +2,23 @@
 # and conditions of the Expat license, a copy of which should be given to you
 # with the source of this application.
 
-from flask import Flask, render_template
+from flask import Flask, render_template, abort
+from humanize import naturalday, naturalsize
+from bson.objectid import ObjectId
+
 from monomoy.core import db
 
 app = Flask(__name__)
+
+
+@app.template_filter('humanize_date')
+def _humanize_date_filter(obj):
+    return naturalday(obj)
+
+
+@app.template_filter('humanize_size')
+def _humanize_size_filter(obj):
+    return naturalsize(obj)
 
 
 @app.route("/")
@@ -15,11 +28,43 @@ def about():
 
 @app.route("/packages")
 def packages():
-    packages = db.packages.find()
+    packages = []
+    for package in db.packages.find():
+        package['user'] = db.users.find_one({"_id": package['user']})
+        packages.append(package)
+
     return render_template('packages.html', **{
         "packages": packages
     })
 
+
+@app.route("/package/<package_id>")
+def package(package_id):
+    package = db.packages.find_one({"_id": package_id})
+
+    if package is None:
+        package = db.packages.find_one({"_id": ObjectId(package_id)})
+
+    if package is None:
+        abort(404)
+
+    return render_template('package.html', **{
+        "package": package,
+        "user": db.users.find_one({"_id": package['user']})
+    })
+
+@app.route("/user/<user_id>")
+def user(user_id):
+    user = db.users.find_one({"_id": user_id})
+    if user is None:
+        user = db.users.find_one({"_id": ObjectId(user_id)})
+
+    if user is None:
+        abort(404)
+
+    return render_template('user.html', **{
+        "user": user
+    })
 
 if __name__ == "__main__":
     app.debug = True
