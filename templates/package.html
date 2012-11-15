@@ -5,7 +5,7 @@
 This package was uploaded {{package.accepted_at|humanize_date}} by
 <a href = '{{url_for('user', user_id=user._id)}}' >{{user.first_name}} {{user.last_name}}</a>.
 
-<h4>Files included</h4>
+<h4>Files</h4>
 
 <table class = 'zebra' >
     <tr>
@@ -22,4 +22,25 @@ This package was uploaded {{package.accepted_at|humanize_date}} by
 
 <h4>Changes</h4>
 <pre>{{package.changes.Changes}}</pre>
+
+<h4>Builds</h4>
+<table class = 'zebra' >
+    <tr>
+        <th>Job</th>
+        <th>Queued At</th>
+        <th>Builds</th>
+    </tr>
+{% for job in jobs %}
+    <tr>
+        <td>{{job._id}}</td>
+        <td>{{job.queued_at|humanize_date}}</td>
+        <td>
+{% for build in job.builds %}
+            {{build}}
+{% endfor %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+
 {% endblock %}

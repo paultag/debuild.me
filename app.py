@@ -52,7 +52,8 @@ def package(package_id):
 
     return render_template('package.html', **{
         "package": package,
-        "user": db.users.find_one({"_id": package['user']})
+        "user": db.users.find_one({"_id": package['user']}),
+        "jobs": db.jobs.find({"package": package['_id']})
     })
 
 @app.route("/user/<user_id>")
