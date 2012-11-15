@@ -22,7 +22,7 @@ This package was uploaded {{package.accepted_at|humanize_date}} by
         <th>Status</th>
         <th>Job</th>
         <th>Queued</th>
-        <th>Builds</th>
+        <th>Build Type</th>
     </tr>
 {% for job in jobs %}
     <tr>
@@ -40,9 +40,7 @@ This package was uploaded {{package.accepted_at|humanize_date}} by
         <td>{{job._id}}</td>
         <td>{{job.queued_at|humanize_date}}</td>
         <td>
-{% for build in job.builds %}
-            {{build}}
-{% endfor %}
+            {{job.type}}
         </td>
     </tr>
 {% endfor %}
