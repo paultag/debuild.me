@@ -1,9 +1,17 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>{{user.first_name}} {{user.last_name}}</h3>
-
-<pre>gpg --keyserver pgp.mit.edu --recv-keys {{user.gpg}}</pre>
+<div class = 'profile' >
+    <img
+     class = 'picture'
+     src = 'http://www.gravatar.com/avatar/{{user.contact.email|md5hash}}?s=75'
+     alt = '' />
+    <div class = 'name' >
+        <b>{{user.first_name}} {{user.last_name}}</b><br />
+        {{user.contact.email}}
+    </div>
+    <div class = 'clear' ></div>
+</div>
 
 <h4>Uploads</h4>
 {% include "package_list.html" ignore missing with context %}

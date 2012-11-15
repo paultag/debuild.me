@@ -5,11 +5,16 @@
 from flask import Flask, render_template, abort
 from humanize import naturalday, naturalsize
 from bson.objectid import ObjectId
+import hashlib
 
 from monomoy.core import db
 
 app = Flask(__name__)
 
+
+@app.template_filter('md5hash')
+def _hash_email(obj):
+    return hashlib.md5(obj).hexdigest()
 
 @app.template_filter('humanize_date')
 def _humanize_date_filter(obj):
