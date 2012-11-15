@@ -16,6 +16,7 @@ app = Flask(__name__)
 def _hash_email(obj):
     return hashlib.md5(obj).hexdigest()
 
+
 @app.template_filter('humanize_date')
 def _humanize_date_filter(obj):
     return naturalday(obj)
@@ -24,6 +25,7 @@ def _humanize_date_filter(obj):
 @app.template_filter('humanize_size')
 def _humanize_size_filter(obj):
     return naturalsize(obj)
+
 
 @app.template_filter('display_name')
 def _display_name_filter(obj):
@@ -55,11 +57,17 @@ def package(package_id):
     if package is None:
         abort(404)
 
+    closes = []  # refactor this into Changes' object
+    if 'Closes' in package['changes']:
+        closes = [x.strip() for x in package['changes']['Closes'].split()]
+
     return render_template('package.html', **{
+        "closes": closes,
         "package": package,
         "user": db.users.find_one({"_id": package['user']}),
         "jobs": db.jobs.find({"package": package['_id']})
     })
+
 
 @app.route("/user/<user_id>")
 def user(user_id):
