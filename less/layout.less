@@ -1,8 +1,12 @@
-html, body {
-    background-color:          #DCDCDC;
+.noshim {
     padding:                   0px;
     margin:                    0px;
+}
+
+html, body {
+    background-color:          @background-color;
     height:                    100%;
+    .noshim;
     .cantarell;
 }
 
@@ -11,8 +15,28 @@ a {
 }
 
 ul {
-    padding:                   0px;
-    margin:                    0px;
+    .noshim;
+}
+
+table {
+    width:                     100%;
+    .noshim;
+    border-spacing:            0px;
+    border-collapse:           collapse;
+    tr {
+        .noshim;
+        td {
+            .noshim;
+            padding:           5px;
+        }
+        border-bottom:         1px solid darken(@background-color, 1%);
+    }
+}
+
+table.zebra {
+    tr:nth-child(2n) {
+        background-color:      #FFFFFF;
+    }
 }
 
 .title {
@@ -58,8 +82,7 @@ ul {
     margin-right:               auto;
     ul {
         list-style-type:        none;
-        margin:                 0px;
-        padding:                0px;
+        .noshim;
         li {
             display:            inline;
             padding-right:      10px;
@@ -147,13 +170,11 @@ ul {
         list-style-type:        none;
         font-size:              0.9em;
         color:                  #AEAEAE;
-        padding:                0px;
-        margin:                 0px;
+        .noshim;
     }
 
     li {
-        padding:                0px;
-        margin:                 0px;
+        .noshim;
     }
 
     a {
@@ -163,10 +184,8 @@ ul {
     h1 {
         font-size:              1.2em;
         border-bottom:          1px solid #333333;
-        width:                  100%;
-        padding:                0px;
-        margin:                 0px;
         width:                  90%;
+        .noshim;
     }
 }
 
