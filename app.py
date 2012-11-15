@@ -63,7 +63,8 @@ def user(user_id):
         abort(404)
 
     return render_template('user.html', **{
-        "user": user
+        "user": user,
+        "packages": db.packages.find({"user": user['_id']})
     })
 
 if __name__ == "__main__":

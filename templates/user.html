@@ -2,4 +2,10 @@
 
 {% block content %}
 <h3>{{user.first_name}} {{user.last_name}}</h3>
+{{user}}
+
+<h4>Uploads</h4>
+{% for package in packages %}
+    {{package}}
+{% endfor %}
 {% endblock %}
