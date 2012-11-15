@@ -3,7 +3,8 @@
 {% block content %}
 <h3>{{package.name}}/{{package.version}}</h3>
 This package was uploaded {{package.accepted_at|humanize_date}} by
-<a href = '{{url_for('user', user_id=user._id)}}' >{{user.first_name}} {{user.last_name}}</a>.
+<a href = '{{url_for('user', user_id=user._id)}}'
+    >{{user.first_name}} {{user.last_name}}</a>.
 
 <h4>Changes</h4>
 <pre>{{package.changes.Changes}}</pre>
