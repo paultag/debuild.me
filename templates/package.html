@@ -11,12 +11,24 @@ This package was uploaded {{package.accepted_at|humanize_date}} by
 <h4>Builds</h4>
 <table class = 'zebra' >
     <tr>
+        <th>Build Status</th>
         <th>Job</th>
         <th>Queued At</th>
         <th>Builds</th>
     </tr>
 {% for job in jobs %}
     <tr>
+        <td>
+        {% if job.finished %}
+            {% if job.failed %}
+<img src = '{{url_for('static', filename='imgs/complete.png')}}' alt = '✓' />
+            {% else %}
+<img src = '{{url_for('static', filename='imgs/incomplete.png')}}' alt = '✘' />
+            {% endif %}
+        {% else %}
+<img src = '{{url_for('static', filename='imgs/waiting.gif')}}' alt = '.' />
+        {% endif %}
+        </td>
         <td>{{job._id}}</td>
         <td>{{job.queued_at|humanize_date}}</td>
         <td>
