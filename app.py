@@ -20,6 +20,13 @@ def _humanize_date_filter(obj):
 def _humanize_size_filter(obj):
     return naturalsize(obj)
 
+@app.template_filter('display_name')
+def _display_name_filter(obj):
+    user = db.users.find_one({"_id": obj})
+    if user is None:
+        user = db.users.find_one({"_id": ObjectId(obj)})
+    return "{first_name} {last_name}".format(**user)
+
 
 @app.route("/")
 def about():
@@ -28,13 +35,8 @@ def about():
 
 @app.route("/packages")
 def packages():
-    packages = []
-    for package in db.packages.find():
-        package['user'] = db.users.find_one({"_id": package['user']})
-        packages.append(package)
-
     return render_template('packages.html', **{
-        "packages": packages
+        "packages": db.packages.find()
     })
 
 

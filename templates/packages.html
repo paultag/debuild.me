@@ -1,22 +1,5 @@
 {% extends "base.html" %}
 
 {% block content %}
-<table class = 'zebra' >
-    <tr>
-        <th>Package Name</th>
-        <th>Package Version</th>
-        <th>Uploader</th>
-        <th>Upload Date</th>
-    </tr>
-{% for package in packages %}
-    <tr>
-        <td>
-<a href = '{{url_for('package', package_id=package._id)}}' >{{package.name}}</a>
-        </td>
-        <td>{{package.version}}</td>
-        <td>{{package.user.first_name}} {{package.user.last_name}}</td>
-        <td>{{package.accepted_at|humanize_date}}</td>
-    </tr>
-{% endfor %}
-</table>
+{% include "package_list.html" ignore missing with context %}
 {% endblock %}
