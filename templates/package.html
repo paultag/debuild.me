@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% block title %}{{package.name}}/{{package.version}}{% endblock %}
+
 {% block content %}
 <h3>{{package.name}}/{{package.version}}</h3>
 This package was uploaded {{package.accepted_at|humanize_date}} by
