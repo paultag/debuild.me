@@ -4,6 +4,7 @@
 
 from flask import Flask, render_template, abort
 from humanize import naturalday, naturalsize
+from collections import defaultdict
 from bson.objectid import ObjectId
 import hashlib
 
@@ -55,8 +56,15 @@ def check(check_id):
     if check is None:
         abort(404)
 
+    tags = defaultdict(lambda: defaultdict(int))
+    for block in check['data']:
+        obj = check['data'][block]
+        for ch in obj:
+            tags[block][ch['tag']] += 1
+
     return render_template('check.html', **{
-        "check": check
+        "check": check,
+        "tags": tags
     })
 
 
