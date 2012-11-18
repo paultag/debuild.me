@@ -6,6 +6,8 @@
 
 <h1>{{check.type}}</h1>
 
+<a href = '{{url_for('job', job_id=check.job)}}' >job</a>
+
 {% for level in check.data %}
     <a href = '#{{level}}' >{{level}}</a>
 {% endfor %}
