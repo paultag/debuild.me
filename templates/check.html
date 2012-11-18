@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}{{check.type}}{% endblock %}
+
+{% block content %}
+
+<h1>{{check.type}}</h1>
+
+{% for level in check.data %}
+    <a href = '#{{level}}' >{{level}}</a>
+{% endfor %}
+
+{% for level in check.data %}
+    <h3 id='{{level}}' >{{level}} issues</h3>
+    <table class = 'zebra' >
+        <tr>
+            <th>File</th>
+            <th>Tag</th>
+            <th>Description</th>
+        </tr>
+    {% for check in check.data[level] %}
+        <tr>
+            <td>{{check.file}}</td>
+            <td>{{check.license}}</td>
+            <td>{{check.copyright}}</td>
+            {# This is hot garbage. Fix this, like, now. #}
+        </tr>
+    {% endfor %}
+    </table>
+{% endfor %}
+{% endblock %}

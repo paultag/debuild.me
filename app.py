@@ -46,6 +46,21 @@ def package(package_id):
     })
 
 
+@app.route("/check/<check_id>")
+def check(check_id):
+    check = db.checks.find_one({"_id": check_id})
+    if check is None:
+        check = db.checks.find_one({"_id": ObjectId(check_id)})
+
+    if check is None:
+        abort(404)
+
+    return render_template('check.html', **{
+        "check": check
+    })
+
+
+
 @app.route("/user/<user_id>")
 def user(user_id):
     user = db.users.find_one({"_id": user_id})
