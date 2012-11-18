@@ -21,9 +21,8 @@
     {% for check in check.data[level] %}
         <tr>
             <td>{{check.file}}</td>
-            <td>{{check.license}}</td>
-            <td>{{check.copyright}}</td>
-            {# This is hot garbage. Fix this, like, now. #}
+            <td>{{check.tag}}</td>
+            <td>{{check.description}}</td>
         </tr>
     {% endfor %}
     </table>
