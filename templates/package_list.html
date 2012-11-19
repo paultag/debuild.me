@@ -1,3 +1,6 @@
+{% if packages.count() == 0 %}
+<h3>No packages!</h3>
+{% else %}
 <table class = 'zebra' >
     <tr>
         <th>Package Name</th>
@@ -20,3 +23,4 @@
     </tr>
 {% endfor %}
 </table>
+{% endif %}

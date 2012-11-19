@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}{{check.type}}{% endblock %}
+
+{% block content %}
+
+<h1>{{check.type}} <small>
+        <a href = '{{url_for('job', job_id=check.job)}}' >(linked job)</a>
+</small></h1>
+
+{% for level in check.data %}
+    <a href = '#{{level}}' >{{level}}</a>
+{% endfor %}
+
+<h3>Tag list</h3>
+<table class = 'zebra' >
+    <tr>
+        <th>Tag</th>
+        <th>Count</th>
+        <th>Severity</th>
+    </tr>
+{% for level in tags %}
+    {% for tag in tags[level] %}
+    <tr>
+        <td>{{tag}}</td>
+        <td>{{tags[level][tag]}}</td>
+        <td>{{level}}</td>
+    </tr>
+    {% endfor %}
+{% endfor %}
+</table>
+
+{% for level in check.data %}
+    <h3 id='{{level}}' >{{level}} issues</h3>
+    <table class = 'zebra' >
+        <tr>
+            <th>File</th>
+            <th>Tag</th>
+            <th>Description</th>
+        </tr>
+    {% for check in check.data[level] %}
+        <tr>
+            <td>{{check.file}}</td>
+            <td>{{check.tag}}</td>
+            <td>{{check.description}}</td>
+        </tr>
+    {% endfor %}
+    </table>
+{% endfor %}
+{% endblock %}
