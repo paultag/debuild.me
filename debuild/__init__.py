@@ -3,7 +3,12 @@
 # with the source of this application.
 
 from flask import Flask
+from monomoy.utils import JSONEncoder
+import json
 
 app = Flask(__name__)
-
 API_BASE = '/api'
+
+
+def serialize(obj):
+    return json.dumps(obj, cls=JSONEncoder)
