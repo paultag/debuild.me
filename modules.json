@@ -1,3 +1,8 @@
 [
-    "debuild.views.core"
+    "debuild.filters.core",
+    "debuild.views.core",
+    "debuild.views.packages",
+    "debuild.views.checks",
+    "debuild.views.jobs",
+    "debuild.views.users"
 ]
