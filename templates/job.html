@@ -3,7 +3,7 @@
 {% block title %}{{job.type}} job {{job._id}}{% endblock %}
 
 {% block content %}
-<h1>{{job.type}}</h1>
+<h1>{{job.type}} job</h1>
 <a href = '{{url_for('package', package_id=job.package)}}' >package link</a>
 
 <h2>checks</h2>
