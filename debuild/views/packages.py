@@ -32,4 +32,3 @@ def package(package_id):
         "user": db.users.find_one({"_id": package['user']}),
         "jobs": db.jobs.find({"package": package['_id']})
     })
-

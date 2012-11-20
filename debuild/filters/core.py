@@ -26,4 +26,3 @@ def _display_name_filter(obj):
     if user is None:
         user = db.users.find_one({"_id": ObjectId(obj)})
     return "{first_name} {last_name}".format(**user)
-
