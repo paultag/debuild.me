@@ -4,5 +4,6 @@
     "debuild.views.packages", 
     "debuild.views.checks", 
     "debuild.views.jobs", 
-    "debuild.views.users"
+    "debuild.views.users",
+    "debuild.views.api"
 ]
