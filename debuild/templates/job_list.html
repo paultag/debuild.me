@@ -5,7 +5,7 @@
         <th>Builder</th>
         <th>Package</th>
         <th>Queued at</th>
-        <th>Finished</th>
+        <th>Finished at</th>
     </tr>
 {% for job in jobs %}
     <tr>
@@ -19,7 +19,7 @@
 <a href = '{{url_for('package', package_id=job.package)}}' >{{job.package}}</a>
         </td>
         <td>{{job.queued_at|humanize_date}}</td>
-        <td>{{job.finished}}</td>
+        <td>{{job.finished_at|humanize_date}}</td>
     </tr>
 {% endfor %}
 </table>
