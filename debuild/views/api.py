@@ -1,7 +1,17 @@
 from debuild import app
-from flask import render_template, abort
+from debuild.utils import db_find
+
+import json
+from flask import render_template, abort, request
+
 
 API_BASE = '/api'
+
+
+@app.route("%s/echo" % (API_BASE), methods=['POST'])
+def echo():
+    obj = request.form
+    return json.dumps(obj)
 
 
 @app.route("%s/ping" % (API_BASE), methods=['POST'])
@@ -18,4 +28,5 @@ def ping():
         sha256 of:
             "%s-%s" % (timestamp, secret)
     """
-    pass
+    obj = request.form['data']
+    return json.dumps(obj)

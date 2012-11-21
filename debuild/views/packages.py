@@ -1,6 +1,7 @@
 from debuild import app
 from monomoy.core import db
 from bson.objectid import ObjectId
+from debuild.utils import db_find
 
 from flask import render_template, abort
 
@@ -14,11 +15,7 @@ def packages():
 
 @app.route("/package/<package_id>")
 def package(package_id):
-    package = db.packages.find_one({"_id": package_id})
-
-    if package is None:
-        package = db.packages.find_one({"_id": ObjectId(package_id)})
-
+    package = db_find('packages', package_id)
     if package is None:
         abort(404)
 

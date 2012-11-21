@@ -1,15 +1,14 @@
 from debuild import app
 from monomoy.core import db
-from bson.objectid import ObjectId
+from debuild.utils import db_find
 
+from bson.objectid import ObjectId
 from flask import render_template, abort
 
 
 @app.route("/job/<job_id>")
 def job(job_id):
-    job = db.jobs.find_one({"_id": job_id})
-    if job is None:
-        job = db.jobs.find_one({"_id": ObjectId(job_id)})
+    job = db_find('jobs', job_id)
     if job is None:
         abort(404)
 
