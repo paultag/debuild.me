@@ -31,15 +31,33 @@ def api_abort(code, text):
 
 
 def api_validate(keys):
-    # pull requesting node
-    # pull last token
-    # pull secret key
-    # check signature matches (token + key)
-    # abort or pass
-    pass
+    req = request.values
+    for key in ['node', 'signature']:
+        if key not in req:
+            return False
+
+    for key in keys:
+        if key not in req:
+            return False
+
+    node = req['node']
+    builder = Builder(node)
+    return builder.validate_request(req['signature'])
 
 
-@app.route('%s/token' % (API_BASE))
+@app.route("%s/ping" % (API_BASE), methods=['GET', 'POST'])
+def ping():
+    req = request.values
+    if not api_validate(req):
+        return api_abort('bad-sig', 'bad signature')
+    builder = Builder(req['node'])
+    builder.ping()
+    return serialize({
+        'ping': 'pung'
+    }, True)
+
+
+@app.route('%s/token' % (API_BASE), methods=['GET', 'POST'])
 def token():
     """ Unauth'd ping """
     req = request.values
