@@ -9,6 +9,8 @@ import json
 app = Flask(__name__)
 API_BASE = '/api'
 
+load_modules_from_json('modules.json')
+
 
 def serialize(obj):
     return json.dumps(obj, cls=JSONEncoder)
