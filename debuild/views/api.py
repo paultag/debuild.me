@@ -1,8 +1,11 @@
 from debuild import app
+from monomoy.core import db
+from monomoy.utils import JSONEncoder
+from debuild.utils import db_find
 from chatham.builders import Builder
 
-import json
 from flask import request
+import json
 
 API_BASE = '/api'
 DEBUG = True
@@ -19,8 +22,8 @@ def serialize(obj, allok):
     obj['status'] = 'ok' if allok else 'nokay'
 
     if DEBUG:
-        return json.dumps(obj, sort_keys=True, indent=4)
-    return json.dumps(obj)
+        return json.dumps(obj, sort_keys=True, indent=4, cls=JSONEncoder)
+    return json.dumps(obj, cls=JSONEncoder)
 
 
 def api_abort(code, text):
@@ -45,18 +48,6 @@ def api_validate(keys):
     return builder.validate_request(req['signature'])
 
 
-@app.route("%s/ping" % (API_BASE), methods=['GET', 'POST'])
-def ping():
-    req = request.values
-    if not api_validate(req):
-        return api_abort('bad-sig', 'bad signature')
-    builder = Builder(req['node'])
-    builder.ping()
-    return serialize({
-        'ping': 'pung'
-    }, True)
-
-
 @app.route('%s/token' % (API_BASE), methods=['GET', 'POST'])
 def token():
     """ Unauth'd ping """
@@ -70,4 +61,40 @@ def token():
 
     return serialize({
         "token": key
+    }, True)
+
+
+@app.route("%s/ping" % (API_BASE), methods=['GET', 'POST'])
+def ping():
+    req = request.values
+    if not api_validate([]):
+        return api_abort('bad-sig', 'bad signature')
+    builder = Builder(req['node'])
+    builder.ping()
+    return serialize({
+        'ping': 'pung'
+    }, True)
+
+
+@app.route("%s/result" % (API_BASE), methods=['GET', 'POST'])
+def result():
+    req = request.values
+    if not api_validate(['data']):
+        return api_abort('bad-sig', 'bad signature')  # factor this out
+    builder = Builder(req['node'])
+    builder.ping()
+    data = json.loads(req['data'])
+    job = data['job']
+    jobj = db_find('jobs', job)
+    if jobj['builder'] is None:
+        return api_abort('bad-builder', 'bad builder node')
+
+    builder = Builder(jobj['builder'])
+    if jobj['builder'] != builder._obj['_id']:  # XXX: Fixme
+        return api_abort('bad-builder', 'foo bad builder node')
+
+    check_id = db.checks.insert(data)
+
+    return serialize({
+        'check': check_id
     }, True)
