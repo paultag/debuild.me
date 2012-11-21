@@ -14,5 +14,6 @@ def user(user_id):
 
     return render_template('user.html', **{
         "user": user,
-        "packages": db.packages.find({"user": user['_id']})
+        "packages": db.packages.find({"user": user['_id']}),
+        "builders": db.builders.find({"owner": user['_id']})
     })

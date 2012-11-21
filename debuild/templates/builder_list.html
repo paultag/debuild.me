@@ -1,0 +1,21 @@
+{% if builders.count() != 0 %}
+<table class = 'zebra' >
+    <tr>
+        <th>Builder Name</th>
+        <th>Abilities</th>
+        <th>Last ping</th>
+    </tr>
+{% for builder in builders %}
+    <tr>
+        <td>{{builder._id}}</td>
+        <td>
+{% for ability in builder.abilities %}
+            <span class = 'label-info' >{{ability}}</span>
+{% endfor %}
+        </td>
+        <td>{{builder.ping|humanize_date}}</td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}
+
