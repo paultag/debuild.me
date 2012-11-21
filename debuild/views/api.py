@@ -1,53 +1,55 @@
 from debuild import app
-from monomoy.core import db
-from debuild.utils import db_find
+from chatham.builders import Builder
 
 import json
-import hashlib
-import datetime as dt
-from flask import render_template, abort, request
-
+from flask import request
 
 API_BASE = '/api'
+DEBUG = True
 
 
-def serialize(obj):
+# Core verbs:
+#
+#  - token
+#  - ping
+#  - result
+
+
+def serialize(obj, allok):
+    obj['status'] = 'ok' if allok else 'nokay'
+
+    if DEBUG:
+        return json.dumps(obj, sort_keys=True, indent=4)
     return json.dumps(obj)
 
 
-@app.route("%s/echo" % (API_BASE), methods=['POST'])
-def echo():
-    obj = request.form
-    return serialize(obj)
+def api_abort(code, text):
+    return serialize({
+        'code': code,
+        'text': text
+    }, False)
 
 
-@app.route("%s/ping" % (API_BASE), methods=['POST'])
-def ping():
-    obj = request.form['data']
-    return serialize(obj)
+def api_validate(keys):
+    # pull requesting node
+    # pull last token
+    # pull secret key
+    # check signature matches (token + key)
+    # abort or pass
+    pass
 
 
-@app.route("%s/token" % (API_BASE), methods=['POST', 'GET'])
+@app.route('%s/token' % (API_BASE))
 def token():
-    builder_name = request.form['node']
-    builder = db.builders.find_one({
-        "_id": builder_name
-    })
-    if builder is None:
-        abort(401)
+    """ Unauth'd ping """
+    req = request.values
+    if 'node' not in req:
+        return api_abort('nsp-node', 'No such param: node')
 
-    entropy = dt.datetime.now().microsecond
-    s = "%s-%s" % (str(entropy), builder_name)
-    has = hashlib.sha256(s).hexdigest()
+    node = req['node']
+    bob = Builder(node)
+    key = bob.new_token()
 
-    builder['token'] = has
-    db.builders.update({"_id": builder_name},
-                       builder,
-                       False,
-                       safe=True)
-
-    obj = {
-        "builder": builder['_id'],
-        "request_id": has
-    }
-    return serialize(obj)
+    return serialize({
+        "token": key
+    }, True)
