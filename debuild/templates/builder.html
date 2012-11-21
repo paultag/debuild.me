@@ -3,5 +3,20 @@
 {% block title %}{% endblock %}
 
 {% block content %}
-xxx: builder information here.
+
+<h3>Builder: {{builder.name()}}</h3>
+
+This builder's last ping was {{builder._obj.ping|humanize_date}}. This machine
+is owned by {{builder._obj.owner|display_name}}.
+
+{% with %}
+    {% set jobs = builder.owned_jobs() %}
+    {% include "job_list.html" ignore missing with context %}
+{% endwith %}
+
+{% with %}
+    {% set jobs = builder.finished_jobs() %}
+    {% include "job_list.html" ignore missing with context %}
+{% endwith %}
+
 {% endblock %}

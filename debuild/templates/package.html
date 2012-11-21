@@ -19,34 +19,8 @@ This package was uploaded {{package.accepted_at|humanize_date}} by
 <pre>{{package.changes.Changes}}</pre>
 
 <h4>Builds</h4>
-<table class = 'zebra' >
-    <tr>
-        <th>Status</th>
-        <th>Job</th>
-        <th>Queued</th>
-        <th>Build Type</th>
-    </tr>
-{% for job in jobs %}
-    <tr>
-        <td>
-        {% if job.finished %}
-            {% if job.failed %}
-<img src = '{{url_for('static', filename='imgs/complete.png')}}' alt = '✓' />
-            {% else %}
-<img src = '{{url_for('static', filename='imgs/incomplete.png')}}' alt = '✘' />
-            {% endif %}
-        {% else %}
-<img src = '{{url_for('static', filename='imgs/waiting.gif')}}' alt = '.' />
-        {% endif %}
-        </td>
-        <td><a href = '{{url_for('job', job_id=job._id)}}' >{{job._id}}</a></td>
-        <td>{{job.queued_at|humanize_date}}</td>
-        <td>
-            {{job.type}}
-        </td>
-    </tr>
-{% endfor %}
-</table>
+{% include "job_list.html" ignore missing with context %}
+
 
 <h4>Files</h4>
 <table class = 'zebra' >
