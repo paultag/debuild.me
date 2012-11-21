@@ -86,6 +86,8 @@ def result():
     data = json.loads(req['data'])
     job = data['job']
     jobj = db_find('jobs', job)
+    data['job'] = jobj['_id']
+
     if jobj['builder'] is None:
         return api_abort('bad-builder', 'bad builder node')
 
