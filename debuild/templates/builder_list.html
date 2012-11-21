@@ -7,7 +7,9 @@
     </tr>
 {% for builder in builders %}
     <tr>
-        <td>{{builder._id}}</td>
+        <td>
+<a href = "{{url_for('builder', builder_id=builder._id)}}">{{builder._id}}</a>
+        </td>
         <td>
 {% for ability in builder.abilities %}
             <span class = 'label-info' >{{ability}}</span>
@@ -18,4 +20,3 @@
 {% endfor %}
 </table>
 {% endif %}
-
