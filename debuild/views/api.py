@@ -37,7 +37,7 @@ def token():
         abort(401)
 
     entropy = dt.datetime.now().microsecond
-    s = "%s-%s" % (str(entropy), "")
+    s = "%s-%s" % (str(entropy), builder_name)
     has = hashlib.sha256(s).hexdigest()
 
     builder['token'] = has
