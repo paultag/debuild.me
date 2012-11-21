@@ -19,7 +19,13 @@
 <a href = '{{url_for('package', package_id=job.package)}}' >{{job.package}}</a>
         </td>
         <td>{{job.queued_at|humanize_date}}</td>
-        <td>{{job.finished_at|humanize_date}}</td>
+        <td>
+{% if job.finished %}
+            {{job.finished_at|humanize_date}}
+{% else %}
+            (not finished)
+{% endif %}
+        </td>
     </tr>
 {% endfor %}
 </table>
