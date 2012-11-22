@@ -13,7 +13,11 @@
 <a href = '{{url_for('job', job_id=job._id)}}' >{{job._id}}</a>
         </td>
         <td>
+{% if job.builder %}
 <a href = '{{url_for('builder', builder_id=job.builder)}}' >{{job.builder}}</a>
+{% else %}
+            (no builder)
+{% endif %}
         </td>
         <td>
 <a href = '{{url_for('package', package_id=job.package)}}' >{{job.package}}</a>
