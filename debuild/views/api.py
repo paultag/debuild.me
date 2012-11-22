@@ -9,21 +9,10 @@ import datetime as dt
 from flask import request
 
 API_BASE = '/api'
-DEBUG = True
-
-
-# Core verbs:
-#
-#  - token
-#  - ping
-#  - result
 
 
 def serialize(obj, allok):
     obj['status'] = 'ok' if allok else 'nokay'
-
-    if DEBUG:
-        return json.dumps(obj, sort_keys=True, indent=4, cls=JSONEncoder)
     return json.dumps(obj, cls=JSONEncoder)
 
 
@@ -34,31 +23,50 @@ def api_abort(code, text):
     }, False)
 
 
+def get_things():
+    req = request.values
+    builder = Builder(req['node'])
+    builder.ping()
+    return (req, builder)
+
+
 def api_validate(keys):
     req = request.values
     for key in ['node', 'signature']:
         if key not in req:
-            return False
+            return api_abort(
+                'forgotten-core-key',
+                'Ah man, it looks like you forgot the core key '
+                '"%s" in the request.' % (key)
+            )
 
     for key in keys:
         if key not in req:
-            return False
+            return api_abort(
+                'forgotten-view-key',
+                'Ah man, it looks like you forgot the view-local key '
+                '"%s" in the request.' % (key)
+            )
 
     node = req['node']
     builder = Builder(node)
-    return builder.validate_request(req['signature'])
+    if builder.validate_request(req['signature']):
+        return None
+
+    return api_abort(
+        'bad-signature',
+        'stupid signature value'
+    )
 
 
 @app.route('%s/token' % (API_BASE), methods=['GET', 'POST'])
 def token():
-    """ Unauth'd ping """
     req = request.values
-    if 'node' not in req:
+    if 'node' not in req:  # no signature.
         return api_abort('nsp-node', 'No such param: node')
 
-    node = req['node']
-    bob = Builder(node)
-    key = bob.new_token()
+    (req, builder) = get_things()
+    key = builder.new_token()
 
     return serialize({
         "token": key
@@ -67,11 +75,12 @@ def token():
 
 @app.route("%s/ping" % (API_BASE), methods=['GET', 'POST'])
 def ping():
-    req = request.values
-    if not api_validate([]):
-        return api_abort('bad-sig', 'bad signature')
-    builder = Builder(req['node'])
+    resp = api_validate([])
+    if resp: return resp
+
+    (req, builder) = get_things()
     builder.ping()
+
     return serialize({
         'ping': 'pung'
     }, True)
@@ -79,11 +88,10 @@ def ping():
 
 @app.route("%s/result" % (API_BASE), methods=['GET', 'POST'])
 def result():
-    req = request.values
-    if not api_validate(['data']):
-        return api_abort('bad-sig', 'bad signature')  # factor this out
-    builder = Builder(req['node'])
-    builder.ping()
+    resp = api_validate(['data'])
+    if resp: return resp
+    (req, builder) = get_things()
+
     data = json.loads(req['data'])
     job = data['job']
     jobj = db_find('jobs', job)
@@ -92,7 +100,6 @@ def result():
     if jobj['builder'] is None:
         return api_abort('bad-builder', 'bad builder node')
 
-    builder = Builder(jobj['builder'])
     if jobj['builder'] != builder._obj['_id']:  # XXX: Fixme
         return api_abort('bad-builder', 'foo bad builder node')
 
@@ -105,12 +112,10 @@ def result():
 
 @app.route("%s/finish" % (API_BASE), methods=['GET', 'POST'])
 def finished():
-    req = request.values
-    if not api_validate(['job']):
-        return api_abort('bad-sig', 'bad signature')  # factor this out
+    resp = api_validate(['data'])
+    if resp: return resp
+    (req, builder) = get_things()
 
-    builder = Builder(req['node'])
-    builder.ping()
     job = req['job']
     jobj = db_find('jobs', job)
 
