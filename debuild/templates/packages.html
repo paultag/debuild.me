@@ -3,8 +3,12 @@
 {% block title %}recently uploaded packages{% endblock %}
 
 {% block content %}
-<h3>Package List</h3>
-Here are some fun packages to look at!<br />
-<br />
+    <h3>Package List</h3>
+    Here are some fun packages to look at!<br />
+    <br />
+{% if packages.count() == 0 %}
+    <h4>Erm, sorry bud, no packages</h4>
+{% else %}
 {% include "package_list.html" ignore missing with context %}
+{% endif %}
 {% endblock %}
