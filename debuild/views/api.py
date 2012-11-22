@@ -77,8 +77,8 @@ def token():
 def ping():
     resp = api_validate([])
     if resp: return resp
-
     (req, builder) = get_things()
+
     builder.ping()
 
     return serialize({
