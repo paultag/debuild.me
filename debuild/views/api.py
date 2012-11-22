@@ -4,8 +4,9 @@ from monomoy.utils import JSONEncoder
 from debuild.utils import db_find
 from chatham.builders import Builder
 
-from flask import request
 import json
+import datetime as dt
+from flask import request
 
 API_BASE = '/api'
 DEBUG = True
@@ -99,4 +100,36 @@ def result():
 
     return serialize({
         'check': check_id
+    }, True)
+
+
+@app.route("%s/finish" % (API_BASE), methods=['GET', 'POST'])
+def finished():
+    req = request.values
+    if not api_validate(['job']):
+        return api_abort('bad-sig', 'bad signature')  # factor this out
+
+    builder = Builder(req['node'])
+    builder.ping()
+    job = req['job']
+    jobj = db_find('jobs', job)
+
+    if jobj['builder'] is None:
+        return api_abort('bad-builder', 'bad builder node')
+
+    if jobj['builder'] != builder._obj['_id']:  # XXX: Fixme
+        return api_abort('bad-builder', 'foo bad builder node')
+
+    if jobj['finished']:
+        return api_abort('job-wtf', 'job is already closed, dummy')
+
+    jobj['finished'] = True
+    jobj['finished_at'] = dt.datetime.now()
+    db.jobs.update({"_id": jobj['_id']},
+                   jobj,
+                   True,
+                   safe=True)
+
+    return serialize({
+        'action': 'job closed'
     }, True)
