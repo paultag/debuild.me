@@ -15,8 +15,15 @@
     <div class = 'clear' ></div>
 </div>
 
-<h4>Uploads</h4>
+{% if packages.count() == 0 %}
+<h5>no uploads</h5>
+{% else %}
 {% include "package_list.html" ignore missing with context %}
+{% endif %}
 
+{% if builders.count() == 0 %}
+<h5>no builders</h5>
+{% else %}
 {% include "builder_list.html" ignore missing with context %}
+{% endif %}
 {% endblock %}

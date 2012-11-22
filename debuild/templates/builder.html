@@ -11,12 +11,20 @@ is owned by {{builder._obj.owner|display_name}}.
 
 {% with %}
     {% set jobs = builder.owned_jobs() %}
+    {% if jobs.count() == 0 %}
+    <h5>No owned jobs</h5>
+    {% else %}
     {% include "job_list.html" ignore missing with context %}
+    {% endif %}
 {% endwith %}
 
 {% with %}
     {% set jobs = builder.finished_jobs() %}
+    {% if jobs.count() == 0 %}
+    <h5>No finished jobs</h5>
+    {% else %}
     {% include "job_list.html" ignore missing with context %}
+    {% endif %}
 {% endwith %}
 
 {% endblock %}
