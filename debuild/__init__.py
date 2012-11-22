@@ -5,14 +5,9 @@
 import json
 from flask import Flask
 
-from monomoy.utils import JSONEncoder
-from debuild.utils import load_modules_from_json
-
+monomoy = json.load(open('monomoy.json', 'r'))  # XXX: Fixme
 app = Flask(__name__)
-API_BASE = '/api'
 
+
+from debuild.utils import load_modules_from_json
 load_modules_from_json('modules.json')  # XXX: Fixme
-
-
-def serialize(obj):
-    return json.dumps(obj, cls=JSONEncoder)

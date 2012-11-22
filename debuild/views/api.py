@@ -1,8 +1,9 @@
-from debuild import app
+from debuild import app, monomoy
 from monomoy.core import db
 from monomoy.utils import JSONEncoder
 from debuild.utils import db_find
 from chatham.builders import Builder
+from monomoy.archive import MonomoyArchive
 
 import json
 import datetime as dt
@@ -57,6 +58,28 @@ def api_validate(keys):
         'bad-signature',
         'stupid signature value'
     )
+
+
+@app.route("%s/package/<package_id>" % (API_BASE), methods=['GET', 'POST'])
+def api_package(package_id):
+    package = db_find('packages', package_id)
+    if package is None:
+        return api_abort('no-such-package',
+                         'no such package: %s exists' % (package_id))
+
+    archive = MonomoyArchive(monomoy['root'])
+    path = archive.get_package_root(package['_id'])
+    root = monomoy['archive']
+    path = "%s/%s" % (root, path)
+
+    dscs = filter(lambda x: x['name'].endswith('.dsc'),
+                  package['changes']['Files'])
+    files = ["%s/%s" % (path, x['name']) for x in dscs]
+
+    return serialize({
+        "files": files,
+        "package": package['_id']
+    }, True)
 
 
 @app.route('%s/token' % (API_BASE), methods=['GET', 'POST'])

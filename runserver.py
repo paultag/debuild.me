@@ -1,3 +1,3 @@
-from debuild import app
+import debuild
 
-app.run(debug=True)
+debuild.app.run(debug=True)
