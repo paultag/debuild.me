@@ -1,8 +1,10 @@
 from debuild import app, monomoy
+from debuild.utils import db_find
+
+from chatham.builders import Builder
+
 from monomoy.core import db
 from monomoy.utils import JSONEncoder
-from debuild.utils import db_find
-from chatham.builders import Builder
 from monomoy.archive import MonomoyArchive
 
 import json
@@ -135,7 +137,7 @@ def result():
 
 @app.route("%s/finish" % (API_BASE), methods=['GET', 'POST'])
 def finished():
-    resp = api_validate(['data'])
+    resp = api_validate(['job'])
     if resp: return resp
     (req, builder) = get_things()
 
@@ -161,3 +163,31 @@ def finished():
     return serialize({
         'action': 'job closed'
     }, True)
+
+
+@app.route("%s/aquire" % (API_BASE), methods=['GET', 'POST'])
+def aquire():
+    resp = api_validate([])
+    if resp: return resp
+    (req, builder) = get_things()
+
+    def _ret_job(job):
+        return serialize({
+            "job": job
+        }, True)
+
+    bid = builder._obj['_id']
+    oldjobs = db.jobs.find({"finished": False, "builder": bid})
+    if oldjobs.count() != 0:
+        return _ret_job(oldjobs[0])
+
+    jobs = db.jobs.find({"finished": False, "builder": None})
+    if jobs.count() <= 0:
+        return api_abort('no-jobs', 'no more jobs')
+
+    job = jobs[0]
+    job['builder'] = bid
+    db.jobs.update({"_id": job['_id']},
+                   job,
+                   safe=True)
+    return _ret_job(job)
