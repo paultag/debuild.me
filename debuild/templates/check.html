@@ -40,7 +40,12 @@
         </tr>
     {% for check in check.data[level] %}
         <tr>
-            <td>{{check.file}}</td>
+            <td>{{check.file}}
+                {% if check.line %}
+                    @ line {{check.line}}
+                {% endif %}
+            </td>
+
             <td>{{check.tag}}</td>
             <td>{{check.description}}</td>
         </tr>
