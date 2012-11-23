@@ -182,7 +182,13 @@ def aquire():
     if oldjobs.count() != 0:
         return _ret_job(oldjobs[0])
 
-    jobs = db.jobs.find({"finished": False, "builder": None})
+    jobs = db.jobs.find({
+        "finished": False,
+        "builder": None,
+        "type": {
+            "$in": builder._obj['abilities']
+        }
+    })
     if jobs.count() <= 0:
         return api_abort('no-jobs', 'no more jobs')
 
