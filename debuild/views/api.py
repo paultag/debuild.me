@@ -80,7 +80,8 @@ def api_package(package_id):
 
     return serialize({
         "files": files,
-        "package": package['_id']
+        "package": package['_id'],
+        "package_obj": package
     }, True)
 
 
