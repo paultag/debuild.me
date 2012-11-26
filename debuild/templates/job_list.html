@@ -1,0 +1,38 @@
+{% if jobs.count() != 0 %}
+<table class = 'zebra' >
+    <tr>
+        <th>Job</th>
+        <th>Builder</th>
+        <th>Package</th>
+        <th>Queued at</th>
+        <th>Finished at</th>
+    </tr>
+{% for job in jobs %}
+    <tr>
+        <td>
+<a href = '{{url_for('job', job_id=job._id)}}' >{{job._id|job_name}}</a>
+        </td>
+        <td>
+{% if job.builder %}
+            <a href = '{{url_for('builder', builder_id=job.builder)}}'
+                >{{job.builder}}</a>
+{% else %}
+            (no builder)
+{% endif %}
+        </td>
+        <td>
+            <a href = '{{url_for('package', package_id=job.package)}}'
+                >{{job.package|package_name}}</a>
+        </td>
+        <td>{{job.queued_at|humanize_date}}</td>
+        <td>
+{% if job.finished %}
+            {{job.finished_at|humanize_date}}
+{% else %}
+            (not finished)
+{% endif %}
+        </td>
+    </tr>
+{% endfor %}
+</table>
+{% endif %}

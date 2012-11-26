@@ -39,6 +39,8 @@ table {
         }
         border-bottom:         1px solid darken(@background-color, 1%);
     }
+    margin-top:                10px;
+    margin-bottom:             10px;
 }
 
 table.zebra {
@@ -218,6 +220,19 @@ table.zebra {
         width:                  90%;
         .noshim;
     }
+}
+
+.label {
+    border-radius:              5px;
+    padding:                    0px 8px 0px 8px;
+    font-size:                  0.7em;
+}
+
+.label-info {
+    .label;
+    background-color:           @color-b;
+    border:                     1px solid darken(@color-b, 30%);
+    color:                      #FFFFFF;
 }
 
 .clear {

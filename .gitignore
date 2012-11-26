@@ -1,2 +1,4 @@
+*pyc
 *swp
-css
+*debuild*egg*
+debuild/static
