@@ -15,11 +15,13 @@
 
 @table-zebra:              #FFFFFF;
 
-@color-r:                  #ef2929;
-@color-o:                  #fcaf3e;
-@color-y:                  #fce94f;
-@color-s:                  #e9b96e;
-@color-g:                  #8ae234;
-@color-b:                  #729fcf;
-@color-i:                  #9ba0cf;
-@color-v:                  #ad7fa8;
+@import "config.deployment.less";
+
+@color-r:                  lighten(#ef2929, @pct);
+@color-o:                  lighten(#fcaf3e, @pct);
+@color-y:                  lighten(#fce94f, @pct);
+@color-s:                  lighten(#e9b96e, @pct);
+@color-g:                  lighten(#8ae234, @pct);
+@color-b:                  lighten(#729fcf, @pct);
+@color-i:                  lighten(#9ba0cf, @pct);
+@color-v:                  lighten(#ad7fa8, @pct);
