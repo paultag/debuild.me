@@ -13,6 +13,10 @@ The following python packages are required for working of debuild.me
  * [monomoy](https://github.com/paultag/monomoy)
  * [chatham](https://github.com/paultag/chatham/)
  * [python-fishhook](https://github.com/paultag/python-fishhook)
+ * flake8
+ * flask
+ * humanize
+ * pymongo
  
 Install these packages using virtualenv package and work in the same
 virtual environment.
