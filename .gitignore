@@ -2,3 +2,4 @@
 *swp
 *debuild*egg*
 debuild/static
+less/config.deployment.less
