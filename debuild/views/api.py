@@ -2,6 +2,7 @@ from debuild import app, monomoy
 from debuild.utils import db_find
 
 from chatham.builders import Builder
+from chatham.queue import ChathamQueue
 
 from monomoy.core import db
 from monomoy.utils import JSONEncoder
@@ -13,6 +14,7 @@ from flask import request
 
 API_BASE = '/api'
 
+CHATHAM_QUEUE = ChathamQueue()
 
 def serialize(obj, allok):
     obj['status'] = 'ok' if allok else 'nokay'
@@ -145,21 +147,7 @@ def finished():
     job = req['job']
     jobj = db_find('jobs', job)
 
-    if jobj['builder'] is None:
-        return api_abort('bad-builder', 'bad builder node')
-
-    if jobj['builder'] != builder._obj['_id']:  # XXX: Fixme
-        return api_abort('bad-builder', 'foo bad builder node')
-
-    if jobj['finished']:
-        return api_abort('job-wtf', 'job is already closed, dummy')
-
-    jobj['finished'] = True
-    jobj['finished_at'] = dt.datetime.now()
-    db.jobs.update({"_id": jobj['_id']},
-                   jobj,
-                   True,
-                   safe=True)
+    builder.finish(jobj)
 
     return serialize({
         'action': 'job closed'
@@ -177,24 +165,8 @@ def aquire():
             "job": job
         }, True)
 
-    bid = builder._obj['_id']
-    oldjobs = db.jobs.find({"finished": False, "builder": bid})
-    if oldjobs.count() != 0:
-        return _ret_job(oldjobs[0])
-
-    jobs = db.jobs.find({
-        "finished": False,
-        "builder": None,
-        "type": {
-            "$in": builder._obj['abilities']
-        }
-    })
-    if jobs.count() <= 0:
+    job = CHATHAM_QUEUE.next_job(builder)
+    if job is None:
         return api_abort('no-jobs', 'no more jobs')
 
-    job = jobs[0]
-    job['builder'] = bid
-    db.jobs.update({"_id": job['_id']},
-                   job,
-                   safe=True)
     return _ret_job(job)
