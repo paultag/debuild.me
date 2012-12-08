@@ -4,7 +4,7 @@ DEPLOYMENT = dev
 
 all: clean build
 
-STATIC=debuild/static
+STATIC=./static
 
 clean:
 	rm -rf $(STATIC)/css
