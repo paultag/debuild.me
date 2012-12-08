@@ -1,7 +1,8 @@
 from debuild import monomoy
 from debuild.utils import db_find
 
-from chatham.builders import Builder, ChathamSanityException
+from chatham.builders import (Builder, ChathamSanityException,
+                              ChathamBuilderNotFound)
 from chatham.queue import ChathamQueue
 
 from monomoy.core import db
@@ -35,7 +36,11 @@ def api_abort(code, text):
 
 def get_things():
     req = request.values
-    builder = Builder(req['node'])
+    try:
+        builder = Builder(req['node'])
+    except ChathamBuilderNotFound:
+        abort(404)
+
     builder.ping()
     return (req, builder)
 
