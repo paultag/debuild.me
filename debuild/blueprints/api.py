@@ -1,18 +1,22 @@
-from debuild import app, monomoy
+from debuild import monomoy
 from debuild.utils import db_find
 
 from chatham.builders import Builder
 from chatham.queue import ChathamQueue
 
-from monomoy.core import db
 from monomoy.utils import JSONEncoder
 from monomoy.archive import MonomoyArchive
 
 import json
 import datetime as dt
-from flask import request
+from flask import Blueprint, render_template, abort, request
+from jinja2 import TemplateNotFound
 
-API_BASE = '/api'
+api = Blueprint(
+    'simple_page',
+    __name__,
+    template_folder='templates'
+)
 
 CHATHAM_QUEUE = ChathamQueue()
 
@@ -64,7 +68,7 @@ def api_validate(keys):
     )
 
 
-@app.route("%s/package/<package_id>" % (API_BASE), methods=['GET', 'POST'])
+@api.route("/package/<package_id>", methods=['GET', 'POST'])
 def api_package(package_id):
     package = db_find('packages', package_id)
     if package is None:
@@ -87,7 +91,7 @@ def api_package(package_id):
     }, True)
 
 
-@app.route('%s/token' % (API_BASE), methods=['GET', 'POST'])
+@api.route('/token', methods=['GET', 'POST'])
 def token():
     req = request.values
     if 'node' not in req:  # no signature.
@@ -101,7 +105,7 @@ def token():
     }, True)
 
 
-@app.route("%s/ping" % (API_BASE), methods=['GET', 'POST'])
+@api.route("/ping", methods=['GET', 'POST'])
 def ping():
     resp = api_validate([])
     if resp: return resp
@@ -114,7 +118,7 @@ def ping():
     }, True)
 
 
-@app.route("%s/result" % (API_BASE), methods=['GET', 'POST'])
+@api.route("/result", methods=['GET', 'POST'])
 def result():
     resp = api_validate(['data'])
     if resp: return resp
@@ -138,7 +142,7 @@ def result():
     }, True)
 
 
-@app.route("%s/finish" % (API_BASE), methods=['GET', 'POST'])
+@api.route("/finish", methods=['GET', 'POST'])
 def finished():
     resp = api_validate(['job'])
     if resp: return resp
@@ -154,7 +158,7 @@ def finished():
     }, True)
 
 
-@app.route("%s/aquire" % (API_BASE), methods=['GET', 'POST'])
+@api.route("/aquire", methods=['GET', 'POST'])
 def aquire():
     resp = api_validate([])
     if resp: return resp
