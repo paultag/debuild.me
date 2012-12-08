@@ -8,12 +8,12 @@
 {% for package in packages %}
     <tr>
         <td>
-            <a href = '{{url_for('package', package_id=package._id)}}'
+            <a href = '{{url_for('site.package', package_id=package._id)}}'
                 >{{package.name}}</a>
         </td>
         <td>{{package.version}}</td>
         <td>
-            <a href = '{{url_for('user', user_id=package.user)}}'
+            <a href = '{{url_for('site.user', user_id=package.user)}}'
                 >{{package.user|display_name}}</a>
         </td>
         <td>{{package.accepted_at|humanize_date}}</td>

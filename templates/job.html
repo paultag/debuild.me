@@ -4,7 +4,7 @@
 
 {% block content %}
 <h1>{{job.type}} job</h1>
-<a href = '{{url_for('package', package_id=job.package)}}' >package link</a>
+<a href = '{{url_for('site.package', package_id=job.package)}}' >package link</a>
 
 <h2>checks</h2>
 
@@ -16,7 +16,7 @@
 {% for check in checks %}
     <tr>
         <td>
-        <a href = '{{url_for('check', check_id=check._id)}}' >{{check.type}}</a>
+        <a href = '{{url_for('site.check', check_id=check._id)}}' >{{check.type}}</a>
         </td>
         <td>
             {% for thing in check.data.keys() %}

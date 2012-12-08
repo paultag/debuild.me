@@ -1,9 +1,10 @@
 from debuild import monomoy
 from debuild.utils import db_find
 
-from chatham.builders import Builder
+from chatham.builders import Builder, ChathamSanityException
 from chatham.queue import ChathamQueue
 
+from monomoy.core import db
 from monomoy.utils import JSONEncoder
 from monomoy.archive import MonomoyArchive
 
@@ -169,7 +170,11 @@ def aquire():
             "job": job
         }, True)
 
-    job = CHATHAM_QUEUE.next_job(builder)
+    try:
+        job = CHATHAM_QUEUE.next_job(builder)
+    except ChathamSanityException as e:
+        return api_abort(e.code, e.description)
+
     if job is None:
         return api_abort('no-jobs', 'no more jobs')
 

@@ -1,8 +1,8 @@
+import hashlib
 from debuild import app
 from monomoy.core import db
 from humanize import naturalday, naturalsize
 from bson.objectid import ObjectId
-import hashlib
 
 
 @app.template_filter('md5hash')

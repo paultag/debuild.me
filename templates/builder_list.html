@@ -8,7 +8,7 @@
 {% for builder in builders %}
     <tr>
         <td>
-<a href = "{{url_for('builder', builder_id=builder._id)}}">{{builder._id}}</a>
+<a href = "{{url_for('site.builder', builder_id=builder._id)}}">{{builder._id}}</a>
         </td>
         <td>
 {% for ability in builder.abilities %}

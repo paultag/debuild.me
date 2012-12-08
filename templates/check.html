@@ -5,7 +5,7 @@
 {% block content %}
 
 <h1>{{check.type}} <small>
-        <a href = '{{url_for('job', job_id=check.job)}}' >(linked job)</a>
+        <a href = '{{url_for('site.job', job_id=check.job)}}' >(linked job)</a>
 </small></h1>
 
 {% for level in check.data %}

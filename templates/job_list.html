@@ -10,18 +10,18 @@
 {% for job in jobs %}
     <tr>
         <td>
-<a href = '{{url_for('job', job_id=job._id)}}' >{{job._id|job_name}}</a>
+<a href = '{{url_for('site.job', job_id=job._id)}}' >{{job._id|job_name}}</a>
         </td>
         <td>
 {% if job.builder %}
-            <a href = '{{url_for('builder', builder_id=job.builder)}}'
+            <a href = '{{url_for('site.builder', builder_id=job.builder)}}'
                 >{{job.builder}}</a>
 {% else %}
             (no builder)
 {% endif %}
         </td>
         <td>
-            <a href = '{{url_for('package', package_id=job.package)}}'
+            <a href = '{{url_for('site.package', package_id=job.package)}}'
                 >{{job.package|package_name}}</a>
         </td>
         <td>{{job.queued_at|humanize_date}}</td>
