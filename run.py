@@ -6,5 +6,5 @@ app = Flask(__name__)
 app.register_blueprint(site)
 app.register_blueprint(api, url_prefix='/api')
 
-
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(debug=True)
