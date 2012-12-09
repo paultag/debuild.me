@@ -1,16 +1,20 @@
 {% if jobs.count() != 0 %}
-<table class = 'zebra' >
+<table id = 'job-results' class = 'zebra' >
     <tr>
         <th>Job</th>
+        <th>Exec status</th>
         <th>Builder</th>
         <th>Package</th>
         <th>Queued at</th>
         <th>Finished at</th>
     </tr>
 {% for job in jobs %}
-    <tr>
+<tr class = '{{job|job_status_string}}' >
         <td>
 <a href = '{{url_for('site.job', job_id=job._id)}}' >{{job._id|job_name}}</a>
+        </td>
+        <td>
+            {{job|job_status_string}}
         </td>
         <td>
 {% if job.builder %}

@@ -132,6 +132,25 @@ def _display_name_filter(obj):
     return "{first_name} {last_name}".format(**user)
 
 
+@site.app_template_filter('job_status_string')
+def _job_status_string(job):
+    severities = [
+        "undefined",
+        "ok",
+        "info",
+        "warning",
+        "error"
+    ]
+    checks = [x['severity'] for x in
+              db.checks.find({"job": job['_id']})]
+    idex = 0
+    for check in checks:
+        n_idex = severities.index(check)
+        if n_idex > idex:
+            idex = n_idex
+    return severities[idex]
+
+
 @site.app_template_filter('job_name')
 def _job_name_filter(obj):
     job = db.jobs.find_one({"_id": obj})
