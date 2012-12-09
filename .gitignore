@@ -1,5 +1,5 @@
 *pyc
 *swp
 *debuild*egg*
-static
+static/css
 less/config.deployment.less
