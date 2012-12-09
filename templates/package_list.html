@@ -9,7 +9,7 @@
     <tr>
         <td>
             <a href = '{{url_for('site.package', package_id=package._id)}}'
-                >{{package.name}}</a>
+                >{{package.name}}</a> ({{package|build_status}})
         </td>
         <td>{{package.version}}</td>
         <td>

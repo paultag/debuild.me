@@ -137,6 +137,17 @@ def _job_name_filter(obj):
     return "{type}".format(**job)
 
 
+@site.app_template_filter('build_status')
+def _job_name_filter(obj):
+    total = db.jobs.find({"package": obj['_id']}).count()
+    finished = db.jobs.find({"package": obj['_id'],
+                             "finished": True}).count()
+
+    todo = total - finished
+
+    return "%s builds (%s remain)" % (total, todo)
+
+
 @site.app_template_filter('package_name')
 def _package_name_filter(obj):
     package = db.packages.find_one({"_id": obj})
