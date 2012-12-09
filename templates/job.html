@@ -8,13 +8,13 @@
 
 <h2>checks</h2>
 
-<table class = 'zebra' >
+<table id = 'job-results' class = 'zebra' >
     <tr>
         <th>Check Routine</th>
         <th>Rundown</th>
     </tr>
 {% for check in checks %}
-    <tr>
+    <tr class = '{{check.severity}}' >
         <td>
         <a href = '{{url_for('site.check', check_id=check._id)}}' >{{check.type}}</a>
         </td>
