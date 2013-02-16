@@ -1,6 +1,5 @@
 #
 
-from jinja2 import TemplateNotFound
 from flask import Blueprint
 
 
