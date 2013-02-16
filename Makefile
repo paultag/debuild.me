@@ -1,14 +1,26 @@
 #
 
+LESSC = lessc
+LESSCFLAGS = -x
+STATIC = static
+STATIC_CSS = $(STATIC)/css
+
+
+all: build
+	@echo "Nice."
+
 
 lint:
 	flake8 debuild
 
-build:
-	@echo "Nothing to build yet"
+
+build: clean
+	$(LESSC) $(LESSCFLAGS) less/debuild.me.less > $(STATIC_CSS)/debuild.me.css
 
 
-dev: lint build
+clean:
+	rm -rf $(STATIC_CSS)
+	mkdir -p $(STATIC_CSS)
 
 
-all: build
+.PHONY: lint build clean
