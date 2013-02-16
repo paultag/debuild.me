@@ -20,11 +20,15 @@
 
 from chatham.builders import (Builder, ChathamBuilderNotFound,
                               ChathamSanityException)
+from storz.decompress import digest_firehose_tree
+from monomoy.core import db
+from firehose.report import Analysis
 from debuild import __version__
 
 from flask import Blueprint, request, abort
 
 from functools import wraps
+import StringIO
 import json
 
 
@@ -48,6 +52,8 @@ def protected(fn):
         buildd_token = request.form['signature']
 
         node = Builder(buildd_name)
+        node.ping()
+
         if node.validate_request(buildd_token):
             return apimethod(fn)(*args, **kwargs)
         else:
@@ -93,3 +99,17 @@ def ping():
     node = Builder(buildd_name)
     node.ping()
     return _jr({"ping": "ok"})
+
+
+@api.route("/log", methods=["POST"])
+@protected
+def log():
+    buildd_name = request.form['name']
+    node = Builder(buildd_name)
+    report = Analysis.from_xml(StringIO.StringIO(request.form['firehose']))
+    entry = digest_firehose_tree(report)
+    db.reports.insert({
+        "package": request.form['package'],
+        "log": entry
+    }, safe=True)
+    return _jr({"log": "ok"})
