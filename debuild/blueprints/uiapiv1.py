@@ -18,18 +18,28 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Flask
-from debuild.blueprints.frontend import frontend
-from debuild.blueprints.apiv1 import api as apiv1
-from debuild.blueprints.uiapiv1 import uiapi as uiapiv1
+from flask import Blueprint, render_template
+from debuild.blueprints.apiv1 import _jr
+from monomoy.core import db
 
 
-app = Flask(__name__)
-
-app.register_blueprint(frontend)
-app.register_blueprint(apiv1, url_prefix='/api/v1')
-app.register_blueprint(uiapiv1, url_prefix='/uiapi/v1')
+uiapi = Blueprint('uiapi', __name__, template_folder='templates')
 
 
-if __name__ == '__main__':
-    app.run(debug=True)
+@uiapi.route("/times/<package>")
+def times(package):
+    reports = db.reports.find({"package": package})
+    times = []
+    for report in reports:
+        sut = report['log']['metadata']['sut']
+        version = sut['version']
+        if "release" in sut:
+            version += "-%s" % (sut['release'])
+
+        times.append({
+            "time": report['log']['metadata']['stats']['wallclocktime'],
+            "package": sut['name'],
+            "version": version,
+            "arch": sut
+        })
+    return _jr({"times": times})
