@@ -9,7 +9,8 @@ setup(
     name=__appname__,
     version=__version__,
     packages=[
-        'debuild'
+        'debuild',
+        'debuild.blueprints',
     ],
     author="Paul Tagliamonte",
     author_email="paultag@debian.org",
