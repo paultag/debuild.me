@@ -18,7 +18,8 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from chatham.builders import Builder, ChathamBuilderNotFound
+from chatham.builders import (Builder, ChathamBuilderNotFound,
+                              ChathamSanityException)
 from debuild import __version__
 
 from flask import Blueprint, request, abort
@@ -43,12 +44,16 @@ def _jr(obj, hr_status="ok", status=200):
 def protected(fn):
     @wraps(fn)
     def _(*args, **kwargs):
-        buildd_name = request.form['builder_name']
-        buildd_token = request.form['builder_token']
+        buildd_name = request.form['name']
+        buildd_token = request.form['signature']
 
         node = Builder(buildd_name)
-
-        return fn(*args, **kwargs)
+        if node.validate_request(buildd_token):
+            return apimethod(fn)(*args, **kwargs)
+        else:
+            return _jr({
+                "message": "Invalid Token"
+            }, "failure", 401)
     return _
 
 
@@ -60,6 +65,10 @@ def apimethod(fn):
             return _jr({
                 "message": "No such buildd node known."
             }, "failure", 401)
+        except ChathamSanityException:
+            return _jr({
+                "message": "General sanity error. WTF did you do?"
+            }, "failure", 501)
     return _
 
 
@@ -68,10 +77,19 @@ def index():
     return "Hello!"
 
 
-@api.route("/new-token", methods=["POST"])
+@api.route("/token", methods=["POST"])
 @apimethod
-def new_token():
-    buildd_name = request.form['builder_name']
+def token():
+    buildd_name = request.form['name']
     node = Builder(buildd_name)
     tok = node.new_token()
     return _jr({"token": tok})
+
+
+@api.route("/ping", methods=["POST"])
+@protected
+def ping():
+    buildd_name = request.form['name']
+    node = Builder(buildd_name)
+    node.ping()
+    return _jr({"ping": "ok"})
