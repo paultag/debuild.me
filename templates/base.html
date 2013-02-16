@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% endblock %} | debuild.me</title>
+        <link rel="stylesheet" href = "{{ url_for('static', filename='css/debuild.css') }}" ></link>
+    </head>
+    <body>
+        <div class = 'header' >
+            <div class = 'color color-r' ></div>
+            <div class = 'color color-s' ></div>
+            <div class = 'color color-o' ></div>
+            <div class = 'color color-y' ></div>
+            <div class = 'color color-g' ></div>
+            <div class = 'color color-b' ></div>
+            <div class = 'color color-i' ></div>
+            <div class = 'color color-v' ></div>
+            <div class = 'clear' ></div>
+        </div>
+        <div class = 'headblock' >
+            <div class = 'container' ><div class = 'shim' >
+                    <div class = 'title' >
+                        debuild.me
+                        <span class = 'small' >
+                            Because testing packages sucks
+                        </span>
+                    </div>
+            </div></div>
+        </div>
+        <div class = 'headblock' >
+            <div class = 'banner' >
+                <ul>
+                    <li><a href = '/' >Home</a></li>
+                    <li><a href = '/packages' >Packages</a></li>
+                    <li><a href = '/about' >About</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class = 'content' >
+            <div class = 'main-container' ><div class = 'shim' >
+{% block content %}
+{% endblock %}
+            </div></div>
+        </div>
+        <div class = 'footer' >
+            <div class = 'container' ><div class = 'shim' >
+                <div class = 'fifth' >
+                    <h1><i class="icon-sitemap"></i> Links</h1>
+                    <ul>
+                        <li><a href = '' >Uploaders</a></li>
+                        <li><a href = '' >Builds</a></li>
+                        <li><a href = '' >Statistics</a></li>
+                        <li><a href = '' >Packages</a></li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1><i class="icon-link"></i> Debian Links</h1>
+                    <ul>
+                        <li><a href = 'http://www.debian.org/' >Homepage</a></li>
+                        <li><a href = 'http://www.debian.org/doc/debian-policy/' >Frickn' Policy</a></li>
+                        <li><a href = 'http://www.debian.org/social_contract#guidelines' >DFSG</a></li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1><i class="icon-group"></i> About</h1>
+                    <ul>
+                        <li><a href = 'http://pault.ag/' >Paul's Homepage</a></li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1><i class="icon-info-sign"></i> Help</h1>
+                    <ul>
+                        <li><a href = '#' >Pffft.</a></li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1><i class="icon-github"></i> Source Code</i></h1>
+                    <ul>
+                        <li><a href = 'https://github.com/paultag/debuild.me' >debuild.me</a></li>
+                        <li><a href = 'https://github.com/paultag/chatham' >Chatham</a></li>
+                        <li><a href = 'https://github.com/paultag/monomoy' >Monomoy</a></li>
+                        <li><a href = 'https://github.com/paultag/python-fishhook' >Fishhook</a></li>
+                    </ul>
+                </div>
+            </div></div>
+        </div>
+    </body>
+</html>
