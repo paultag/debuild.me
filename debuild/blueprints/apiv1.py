@@ -36,6 +36,9 @@ api = Blueprint('apiv1', __name__, template_folder='templates')
 
 
 def _jr(obj, hr_status="ok", status=200):
+    """
+    Return a JSON response
+    """
     obj['status'] = hr_status
 
     return (json.dumps(obj), status, {
@@ -46,6 +49,9 @@ def _jr(obj, hr_status="ok", status=200):
 
 
 def protected(fn):
+    """
+    Protect an API method
+    """
     @wraps(fn)
     def _(*args, **kwargs):
         buildd_name = request.form['name']
@@ -64,6 +70,9 @@ def protected(fn):
 
 
 def apimethod(fn):
+    """
+    This is an API method. Catch common errors.
+    """
     def _(*args, **kwargs):
         try:
             return fn(*args, **kwargs)
@@ -80,12 +89,19 @@ def apimethod(fn):
 
 @api.route("/")
 def index():
+    """
+    Say hi!
+    """
     return "Hello!"
 
 
 @api.route("/token", methods=["POST"])
 @apimethod
 def token():
+    """
+    Request a token to sign the next response with. This is an unprotected
+    method.
+    """
     buildd_name = request.form['name']
     node = Builder(buildd_name)
     tok = node.new_token()
@@ -95,6 +111,9 @@ def token():
 @api.route("/ping", methods=["POST"])
 @protected
 def ping():
+    """
+    Basically, a no-op. Test of the proecteted method stuff.
+    """
     buildd_name = request.form['name']
     node = Builder(buildd_name)
     node.ping()
@@ -104,6 +123,15 @@ def ping():
 @api.route("/log", methods=["POST"])
 @protected
 def log():
+    """
+    Post a build log (in Firehose) format to the internal DB.
+
+    name::
+        package ID that the log relates to
+
+    firehose::
+        firehose XML payload containing the build results.
+    """
     buildd_name = request.form['name']
     node = Builder(buildd_name)
     report = Analysis.from_xml(StringIO.StringIO(request.form['firehose']))
