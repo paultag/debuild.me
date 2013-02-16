@@ -18,17 +18,60 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Blueprint
+from chatham.builders import Builder, ChathamBuilderNotFound
+from debuild import __version__
+
+from flask import Blueprint, request, abort
+
+from functools import wraps
 import json
 
 
 api = Blueprint('apiv1', __name__, template_folder='templates')
 
 
-def _jr(obj):
-    return json.dumps(obj)
+def _jr(obj, hr_status="ok", status=200):
+    obj['status'] = hr_status
+
+    return (json.dumps(obj), status, {
+        "X-Debuild-Version": __version__,
+        "X-Why-Quote": "Keep your producer guessing, when you're in "
+                       "the booth confessing"
+    })
+
+
+def protected(fn):
+    @wraps(fn)
+    def _(*args, **kwargs):
+        buildd_name = request.form['builder_name']
+        buildd_token = request.form['builder_token']
+
+        node = Builder(buildd_name)
+
+        return fn(*args, **kwargs)
+    return _
+
+
+def apimethod(fn):
+    def _(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except ChathamBuilderNotFound:
+            return _jr({
+                "message": "No such buildd node known."
+            }, "failure", 401)
+    return _
 
 
 @api.route("/")
 def index():
-    return _jr({"Hello": "world"})
+    return "Hello!"
+
+
+@api.route("/new-token", methods=["POST"])
+@apimethod
+def new_token():
+    buildd_name = request.form['builder_name']
+    node = Builder(buildd_name)
+    tok = node.new_token()
+    return _jr({"token": tok})
