@@ -10,6 +10,9 @@ all: build
 	@echo "Nice."
 
 
+dev: lint all
+
+
 lint:
 	flake8 debuild
 

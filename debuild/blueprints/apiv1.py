@@ -25,7 +25,7 @@ from monomoy.core import db
 from firehose.report import Analysis
 from debuild import __version__
 
-from flask import Blueprint, request, abort
+from flask import Blueprint, request
 
 from functools import wraps
 import StringIO
@@ -133,7 +133,7 @@ def log():
         firehose XML payload containing the build results.
     """
     buildd_name = request.form['name']
-    node = Builder(buildd_name)
+    Builder(buildd_name)
     report = Analysis.from_xml(StringIO.StringIO(request.form['firehose']))
     entry = digest_firehose_tree(report)
     db.reports.insert({
