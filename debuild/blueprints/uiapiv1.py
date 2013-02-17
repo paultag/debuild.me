@@ -40,6 +40,6 @@ def times(package):
             "time": report['log']['metadata']['stats']['wallclocktime'],
             "package": sut['name'],
             "version": version,
-            "arch": sut
+            "arch": sut['buildarch'] if "buildarch" in sut else "source"
         })
     return _jr({"times": times})
