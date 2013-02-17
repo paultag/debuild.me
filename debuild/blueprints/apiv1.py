@@ -126,11 +126,14 @@ def log():
     """
     Post a build log (in Firehose) format to the internal DB.
 
-    name::
+    package::
         package ID that the log relates to
 
     firehose::
         firehose XML payload containing the build results.
+
+    when::
+        when this log is from
     """
     buildd_name = request.form['name']
     Builder(buildd_name)
@@ -138,6 +141,7 @@ def log():
     entry = digest_firehose_tree(report)
     db.reports.insert({
         "package": request.form['package'],
+        "when": request.form['when'],
         "log": entry
     }, safe=True)
     return _jr({"log": "ok"})
