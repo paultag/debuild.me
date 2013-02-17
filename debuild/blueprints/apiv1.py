@@ -21,6 +21,7 @@
 from chatham.builders import (Builder, ChathamBuilderNotFound,
                               ChathamSanityException)
 from storz.decompress import digest_firehose_tree
+from monomoy.utils import JSONEncoder
 from monomoy.core import db
 from firehose.report import Analysis
 from debuild import __version__
@@ -28,11 +29,16 @@ from debuild import __version__
 from flask import Blueprint, request
 
 from functools import wraps
+import datetime as dt
 import StringIO
 import json
 
 
 api = Blueprint('apiv1', __name__, template_folder='templates')
+
+
+def _convert_date(foo):
+    return dt.datetime.fromtimestamp(foo)
 
 
 def _jr(obj, hr_status="ok", status=200):
@@ -41,7 +47,7 @@ def _jr(obj, hr_status="ok", status=200):
     """
     obj['status'] = hr_status
 
-    return (json.dumps(obj), status, {
+    return (json.dumps(obj, cls=JSONEncoder), status, {
         "X-Debuild-Version": __version__,
         "X-Why-Quote": "Keep your producer guessing, when you're in "
                        "the booth confessing"
@@ -141,7 +147,7 @@ def log():
     entry = digest_firehose_tree(report)
     db.reports.insert({
         "package": request.form['package'],
-        "when": request.form['when'],
+        "when": _convert_date(float(request.form['when'])),
         "log": entry
     }, safe=True)
     return _jr({"log": "ok"})
