@@ -27,3 +27,8 @@ frontend = Blueprint('frontend', __name__, template_folder='templates')
 @frontend.route("/")
 def index():
     return render_template('about.html')
+
+
+@frontend.route("/times/<package>")
+def times(package):
+    return render_template('times.html')
