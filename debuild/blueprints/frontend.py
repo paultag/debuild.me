@@ -18,10 +18,52 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, abort
+from humanize.time import naturaldelta
+from datetime import timedelta
+from bson import ObjectId
+import os.path
+
+from monomoy.core import db
 
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
+
+
+@frontend.app_template_filter('seconds_display')
+def seconds_display(time):
+    td = timedelta(seconds=time)
+    return naturaldelta(td)
+
+
+@frontend.app_template_filter('location_display')
+def seconds_display(issue):
+    ret = ""
+    loc = issue['location']
+
+    if "file" in loc:
+        ret += os.path.basename(loc['file']['givenpath'])
+
+    if "point" in loc:
+        ret += " @ line {line}, column {column}".format(**loc['point'])
+
+    #if "function" in loc:
+    #    ret += " ({name})".format(**loc['function'])
+
+    return ret
+
+
+@frontend.app_template_filter('package_display')
+def package_display(sut):
+    ret = "{name}/{version}".format(**sut)
+
+    if "release" in sut:
+        ret += "-{release}".format(**sut)
+
+    if "buildarch" in sut:
+        ret += " on {buildarch}".format(**sut)
+
+    return ret
 
 
 @frontend.route("/")
@@ -29,6 +71,14 @@ def index():
     return render_template('about.html')
 
 
-@frontend.route("/times/<package>")
-def times(package):
-    return render_template('times.html')
+@frontend.route("/report/<report_id>")
+def report(report_id):
+    report = db.reports.find_one({"_id": ObjectId(report_id)})
+    if report is None:
+        abort(404)
+
+    return render_template('report.html', **{
+        "report": report,
+        "metadata": report['log']['metadata'],
+        "sut": report['log']['metadata']['sut']
+    })

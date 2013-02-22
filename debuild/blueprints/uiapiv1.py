@@ -24,23 +24,3 @@ from monomoy.core import db
 
 
 uiapi = Blueprint('uiapi', __name__, template_folder='templates')
-
-
-@uiapi.route("/times/<package>")
-def times(package):
-    reports = db.reports.find({"package": package})
-    times = []
-    for report in reports:
-        sut = report['log']['metadata']['sut']
-        version = sut['version']
-        if "release" in sut:
-            version += "-%s" % (sut['release'])
-
-        times.append({
-            "time": report['log']['metadata']['stats']['wallclocktime'],
-            "package": sut['name'],
-            "version": version,
-            "when": report['when'],
-            "arch": sut['buildarch'] if "buildarch" in sut else "source"
-        })
-    return _jr({"times": times})
