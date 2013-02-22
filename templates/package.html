@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Package page for {{package.name}}/{{package.version}}{% endblock %}
+
+
+{% block content %}
+<h2>{{package.name}}/{{package.version}}</h2>
+
+<p>This package was uploaded by user {{package.user}}</p>
+
+{% for report in reports %}
+    {{report}}
+{% endfor %}
+
+{% endblock %}

@@ -82,3 +82,18 @@ def report(report_id):
         "metadata": report['log']['metadata'],
         "sut": report['log']['metadata']['sut']
     })
+
+
+@frontend.route("/package/<package_id>")
+def package(package_id):
+    objid = ObjectId(package_id)
+    package = db.packages.find_one({"_id": objid})
+    if package is None:
+        abort(404)
+
+    reports = db.reports.find({"package": objid})
+
+    return render_template('package.html', **{
+        "reports": reports,
+        "package": package,
+    })
