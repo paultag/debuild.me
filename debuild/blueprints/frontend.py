@@ -18,7 +18,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Blueprint, render_template, abort
+from flask import Blueprint, render_template
 from humanize.time import naturaldelta
 from datetime import timedelta
 import os.path
@@ -37,7 +37,7 @@ def seconds_display(time):
 
 
 @frontend.app_template_filter('location_display')
-def seconds_display(issue):
+def location_display(issue):
     ret = ""
     loc = issue['location']
 

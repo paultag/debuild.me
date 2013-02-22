@@ -18,9 +18,9 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Blueprint, render_template
-from debuild.blueprints.apiv1 import _jr
-from monomoy.core import db
+from flask import Blueprint  # , render_template
+#from debuild.blueprints.apiv1 import _jr
+#from monomoy.core import db
 
 
 uiapi = Blueprint('uiapi', __name__, template_folder='templates')
