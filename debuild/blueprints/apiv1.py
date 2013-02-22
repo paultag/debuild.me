@@ -24,6 +24,8 @@ from storz.decompress import digest_firehose_tree
 from monomoy.utils import JSONEncoder
 from monomoy.core import db
 from firehose.report import Analysis
+
+from debuild.models.package import Package
 from debuild import __version__
 
 from flask import Blueprint, request
@@ -145,8 +147,10 @@ def log():
     Builder(buildd_name)
     report = Analysis.from_xml(StringIO.StringIO(request.form['firehose']))
     entry = digest_firehose_tree(report)
+    target = Package(request.form['package'])
+
     db.reports.insert({
-        "package": request.form['package'],
+        "package": target['_id'],
         "when": _convert_date(float(request.form['when'])),
         "log": entry
     }, safe=True)

@@ -24,9 +24,9 @@ from debuild.models import DebuildDatabaseObject, strtype
 class Report(DebuildDatabaseObject):
     _table = "reports"
 
-    def __init__(self, report_id):
+    def __init__(self, thing):
         if isinstance(thing, strtype):
-            self._record = self._fetch_by_id(report_id)
+            self._record = self._fetch_by_id(thing)
             if self._record is None:
                 raise Exception
         else:
