@@ -21,6 +21,8 @@
 from monomoy.core import db
 from bson import ObjectId
 
+strtype = basestring
+
 
 class DebuildDatabaseObject(object):
     def _fetch_by_id(self, objid, collection=None):

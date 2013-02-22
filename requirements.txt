@@ -1,5 +1,6 @@
 flask
 pymongo
+humanize
 # firehose
 # storz
 # chatham

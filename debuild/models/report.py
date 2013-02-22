@@ -18,13 +18,16 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from debuild.models import DebuildDatabaseObject
+from debuild.models import DebuildDatabaseObject, strtype
 
 
 class Report(DebuildDatabaseObject):
     _table = "reports"
 
-    def __init__(self, package_id):
-        self._record = self._fetch_by_id(package_id)
-        if self._record is None:
-            raise Exception
+    def __init__(self, report_id):
+        if isinstance(thing, strtype):
+            self._record = self._fetch_by_id(report_id)
+            if self._record is None:
+                raise Exception
+        else:
+            self._record = thing
