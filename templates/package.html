@@ -8,7 +8,7 @@
 
 <p>This package was uploaded by user {{package.user}}</p>
 
-{% for report in reports %}
+{% for report in package.reports() %}
     {{report}}
 {% endfor %}
 

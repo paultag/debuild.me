@@ -21,10 +21,10 @@
 from flask import Blueprint, render_template, abort
 from humanize.time import naturaldelta
 from datetime import timedelta
-from bson import ObjectId
 import os.path
 
-from monomoy.core import db
+from debuild.models.package import Package
+from debuild.models.report import Report
 
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
@@ -73,9 +73,7 @@ def index():
 
 @frontend.route("/report/<report_id>")
 def report(report_id):
-    report = db.reports.find_one({"_id": ObjectId(report_id)})
-    if report is None:
-        abort(404)
+    report = Report(report_id)
 
     return render_template('report.html', **{
         "report": report,
@@ -86,14 +84,8 @@ def report(report_id):
 
 @frontend.route("/package/<package_id>")
 def package(package_id):
-    objid = ObjectId(package_id)
-    package = db.packages.find_one({"_id": objid})
-    if package is None:
-        abort(404)
-
-    reports = db.reports.find({"package": objid})
+    package = Package(package_id)
 
     return render_template('package.html', **{
-        "reports": reports,
-        "package": package,
+        "package": package
     })
