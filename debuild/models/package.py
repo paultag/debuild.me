@@ -19,6 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 from debuild.models import DebuildDatabaseObject, db, strtype
+from debuild.models.report import Report
 
 
 class Package(DebuildDatabaseObject):
@@ -33,4 +34,5 @@ class Package(DebuildDatabaseObject):
             self._record = thing
 
     def reports(self):
-        return db.reports.find({"package": self._record['_id']})
+        return (Report(x) for x in
+                db.reports.find({"package": self._record['_id']}))
