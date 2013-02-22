@@ -31,3 +31,10 @@ class Report(DebuildDatabaseObject):
                 raise Exception
         else:
             self._record = thing
+
+    def generator_name(self):
+        return "{name}/{version}".format(
+            **self._record['log']['metadata']['generator'])
+
+    def issue_count(self):
+        return len(self._record['log']['results'])

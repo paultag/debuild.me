@@ -8,8 +8,18 @@
 
 <p>This package was uploaded by user {{package.user}}</p>
 
+<h3>Uploaded reports:</h3>
+
+<table id = 'package-results' class = 'zebra' >
+    <tr>
+        <th>Generator</th>
+        <th>Issue Count</th>
+    </tr>
 {% for report in package.reports() %}
-    {{report}}
+        <td>{{report.generator_name()}}</td>
+        <td>{{report.issue_count()}}</td>
+    </tr>
 {% endfor %}
+</table>
 
 {% endblock %}
