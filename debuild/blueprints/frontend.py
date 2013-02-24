@@ -25,6 +25,7 @@ import os.path
 
 from debuild.models.package import Package
 from debuild.models.report import Report
+from debuild.models.archive import Archive
 
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
@@ -88,4 +89,13 @@ def package(package_id):
 
     return render_template('package.html', **{
         "package": package
+    })
+
+
+@frontend.route("/packages")
+def packages():
+    package_count = 10
+    return render_template('packages.html', **{
+        "package_count": package_count,
+        "packages": Archive.get_new_packages(package_count),
     })
