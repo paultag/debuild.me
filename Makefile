@@ -5,21 +5,24 @@ STATIC = static
 STATIC_CSS = $(STATIC)/css
 
 
-all: build
+all: build install
 	@echo "Nice."
 
 
 dev: lint all
 
+devel:
+	./devel.sh
 
 lint:
 	flake8 debuild
 
 
 build: clean
-	make -C less
-	mv less/debuild.me.css $(STATIC)/css
+	make -C less build
 
+install:
+	make -C less install
 
 clean:
 	rm -rf $(STATIC_CSS)
