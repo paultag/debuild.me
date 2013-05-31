@@ -1,6 +1,5 @@
 #
 
-LESSC = lessc
 LESSCFLAGS = -x
 STATIC = static
 STATIC_CSS = $(STATIC)/css
@@ -18,7 +17,8 @@ lint:
 
 
 build: clean
-	$(LESSC) $(LESSCFLAGS) less/debuild.me.less > $(STATIC_CSS)/debuild.me.css
+	make -C less
+	mv less/debuild.me.css $(STATIC)/css
 
 
 clean:
