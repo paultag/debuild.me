@@ -19,17 +19,8 @@
 # DEALINGS IN THE SOFTWARE.
 
 from flask import Blueprint, render_template
-from humanize.time import naturaldelta
-from datetime import timedelta
-import os.path
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
-
-
-@frontend.app_template_filter('seconds_display')
-def seconds_display(time):
-    td = timedelta(seconds=time)
-    return naturaldelta(td)
 
 
 @frontend.route("/")
