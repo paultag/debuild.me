@@ -23,11 +23,6 @@ from humanize.time import naturaldelta
 from datetime import timedelta
 import os.path
 
-from debuild.models.package import Package
-from debuild.models.report import Report
-from debuild.models.archive import Archive
-
-
 frontend = Blueprint('frontend', __name__, template_folder='templates')
 
 
@@ -37,65 +32,6 @@ def seconds_display(time):
     return naturaldelta(td)
 
 
-@frontend.app_template_filter('location_display')
-def location_display(issue):
-    ret = ""
-    loc = issue['location']
-
-    if "file" in loc:
-        ret += os.path.basename(loc['file']['givenpath'])
-
-    if "point" in loc:
-        ret += " @ line {line}, column {column}".format(**loc['point'])
-
-    #if "function" in loc:
-    #    ret += " ({name})".format(**loc['function'])
-
-    return ret
-
-
-@frontend.app_template_filter('package_display')
-def package_display(sut):
-    ret = "{name}/{version}".format(**sut)
-
-    if "release" in sut:
-        ret += "-{release}".format(**sut)
-
-    if "buildarch" in sut:
-        ret += " on {buildarch}".format(**sut)
-
-    return ret
-
-
 @frontend.route("/")
 def index():
     return render_template('about.html')
-
-
-@frontend.route("/report/<report_id>")
-def report(report_id):
-    report = Report(report_id)
-
-    return render_template('report.html', **{
-        "report": report,
-        "metadata": report['log']['metadata'],
-        "sut": report['log']['metadata']['sut']
-    })
-
-
-@frontend.route("/package/<package_id>")
-def package(package_id):
-    package = Package(package_id)
-
-    return render_template('package.html', **{
-        "package": package
-    })
-
-
-@frontend.route("/packages")
-def packages():
-    package_count = 10
-    return render_template('packages.html', **{
-        "package_count": package_count,
-        "packages": Archive.get_new_packages(package_count),
-    })
