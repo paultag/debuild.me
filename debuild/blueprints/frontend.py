@@ -21,8 +21,25 @@
 from flask import Blueprint, render_template
 from lucy import Source
 
+from humanize import naturaltime
+import datetime as dt
+
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
+
+
+@frontend.app_template_filter('seconds_display')
+def seconds_display(time):
+    td = timedelta(seconds=time)
+    return naturaltime(td)
+
+
+@frontend.app_template_filter('ago')
+def ago_display(when):
+    if when is None:
+        return "never"
+    td = dt.datetime.utcnow() - when
+    return naturaltime(td)
 
 
 @frontend.route("/")
