@@ -4,9 +4,76 @@
 
 body, html {
     .cantarell;
-    margin:         0px;
-    padding:        0px;
+    margin:                 0px;
+    padding:                0px;
 }
 
+.header {
+    position:               fixed;
+    height:                 75px;
+    width:                  100%;
+    top:                    0px;
+    left:                   0px;
+    border-bottom:          1px solid #CCCCCC;
+    margin-bottom:          50px;
+    box-shadow:             0px 5px 10px #F0F0F0;
+    padding-top:            10px;
+    background-image:       url(../imgs/bg-xp-w.png);
+
+    .title, .sub-title {
+        .old-standard;
+        text-align:         center;
+        padding:            0px;
+        margin:             0px;
+        line-height:        110%;
+    }
+
+    .title {
+        font-size:          2.3em;
+        line-height:        45px;
+    }
+    .sub-title {
+        line-height:        25px;
+    }
+}
+
+.main {
+    margin-top:             120px;
+    width:                  700px;
+    margin-left:            auto;
+    margin-right:           auto;
+}
+
+.container {
+    .main;
+}
+
+table {
+    width:                     100%;
+    border-spacing:            0px;
+    border-collapse:           collapse;
+    border:                    1px solid #999999;
+    tr {
+        td {
+            padding:           5px;
+        }
+        border-bottom:         1px solid #999999;
+    }
+    margin-top:                10px;
+    margin-bottom:             10px;
+}
+
+table.zebra {
+    tr:nth-child(2n) {
+        background-color:      #F1F1F1;
+    }
+}
+
+.foot {
+    height:                 200px;
+    background-color:       #F3F3F3;
+    border-top:             1px solid #DDDDDD;
+    margin-top:             50px;
+}
 
 @import "layout.desktop.less";

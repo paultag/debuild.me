@@ -5,9 +5,19 @@
         <link rel="stylesheet" href = "{{ url_for('static', filename='css/debuild.me.css') }}" ></link>
     </head>
     <body>
+        <div class = 'header' >
+            <div class = 'title' >debuild.me</div>
+            <div class = 'sub-title' >“I never travel without my diary.
+                                       One should always have something
+                                       sensational to read in the train.”</div>
+        </div>
         <div class = 'container' >
 {% block content %}
 {% endblock %}
         </div>
+<!--
+        <div class = 'foot' >
+        </div>
+-->
     </body>
 </html>
