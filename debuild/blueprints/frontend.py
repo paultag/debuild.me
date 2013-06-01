@@ -19,6 +19,8 @@
 # DEALINGS IN THE SOFTWARE.
 
 from flask import Blueprint, render_template
+from lucy import Source
+
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
 
@@ -26,3 +28,11 @@ frontend = Blueprint('frontend', __name__, template_folder='templates')
 @frontend.route("/")
 def index():
     return render_template('about.html')
+
+
+@frontend.route("/source/<package_id>")
+def package(package_id):
+    package = Source.load(package_id)
+    return render_template('package.html', **{
+        "package": package
+    })
