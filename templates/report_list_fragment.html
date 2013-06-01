@@ -1,0 +1,28 @@
+    <table class = 'zebra'>
+        <tr>
+            <th>What</th>
+            <th>Status</th>
+            <th>Builder</th>
+            <th>Issues</th>
+        </tr>
+{% for report in reports %}
+        <tr>
+            <td>
+                <a href = '/report/{{report._id}}' >{{report.type}}</a>
+            </td>
+            <td>
+                {% if report.failed %}
+Failed
+                {% else %}
+Passed
+                {% endif %}
+            </td>
+            <td>
+                {% if report.builder %}
+                <a href = '/machine/{{report.builder}}' >{{report.builder}}</a>
+                {% endif %}
+            </td>
+            <td>{{report.report.results|length}}</td>
+        </tr>
+{% endfor %}
+    </table>

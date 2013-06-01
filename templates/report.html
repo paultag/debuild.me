@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+
+{% with sut = report.report.metadata.sut %}
+<h1>{{sut.name}}/{{sut.version}}-{{sut.release}}
+    <small>on {{sut.buildarch}}</small></h1>
+{% endwith %}
+
+This report was created {{report.created_at|ago}}.
+{% if report.failed %}
+This report has <b>FAILED</b>.
+{% endif %}
+
+{% if report.report.metadata.stats %}
+    This run took
+    {{report.report.metadata.stats.wallclocktime|seconds_display}}
+    to complete.
+{% endif %}
+
+<table class = 'zebra'>
+    <tr>
+        <th>What</th>
+        <th>Severity</th>
+        <th>Where</th>
+    </tr>
+{% for issue in report.report.results %}
+    <tr>
+        <td>{{issue.message.text}}</td>
+        <td>{{issue.severity}}</td>
+        <td>{{issue.location|location}}</td>
+    </tr>
+{% endfor %}
+</table>
+<h1>Full Log</h1>
+<pre>
+{% for line in log %}{{line}}{% endfor %}</pre>
+{% endblock %}

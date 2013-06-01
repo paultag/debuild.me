@@ -19,10 +19,15 @@
 # DEALINGS IN THE SOFTWARE.
 
 from flask import Blueprint, render_template
-from lucy import Source
+from lucy.core import get_config
+from lucy import Source, Report
 
 from humanize import naturaltime
+from humanize.time import naturaldelta
+
+from datetime import timedelta
 import datetime as dt
+import os.path
 
 
 frontend = Blueprint('frontend', __name__, template_folder='templates')
@@ -31,7 +36,7 @@ frontend = Blueprint('frontend', __name__, template_folder='templates')
 @frontend.app_template_filter('seconds_display')
 def seconds_display(time):
     td = timedelta(seconds=time)
-    return naturaltime(td)
+    return naturaldelta(td)
 
 
 @frontend.app_template_filter('ago')
@@ -40,6 +45,21 @@ def ago_display(when):
         return "never"
     td = dt.datetime.utcnow() - when
     return naturaltime(td)
+
+
+@frontend.app_template_filter('location')
+def location_display(obj):
+    if obj is None:
+        return ""
+
+    fo = obj['file']
+    po = obj['point']
+
+    if po is None:
+        return fo['givenpath']
+
+    return "%s:%s" % (obj['file']['givenpath'],
+                      obj['point']['line'])
 
 
 @frontend.route("/")
@@ -60,4 +80,17 @@ def source(package_id):
     package = Source.load(package_id)
     return render_template('source.html', **{
         "package": package
+    })
+
+
+@frontend.route("/report/<report_id>")
+def report(report_id):
+    report = Report.load(report_id)
+    config = get_config()
+    path = os.path.join(config['pool'],
+                        report['log_path'])
+
+    return render_template('report.html', **{
+        "report": report,
+        "log": (x.decode('utf-8') for x in open(path, 'r')),
     })

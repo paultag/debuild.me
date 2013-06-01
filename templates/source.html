@@ -9,34 +9,18 @@
     complete reports, pending jobs and completed binary builds.
 
     <h2>Reports</h2>
-    <table class = 'zebra'>
-        <tr>
-            <th>What</th>
-            <th>Status</th>
-            <th>Builder</th>
-            <th>Issues</th>
-        </tr>
-{% for report in package.get_reports() %}
-        <tr>
-            <td>
-                <a href = '/report/{{report._id}}' >{{report.type}}</a>
-            </td>
-            <td>
-                {% if report.failed %}
-Failed
-                {% else %}
-Passed
-                {% endif %}
-            </td>
-            <td>
-                {% if report.builder %}
-                <a href = '/machine/{{report.builder}}' >{{report.builder}}</a>
-                {% endif %}
-            </td>
-            <td>{{report.report.results|length}}</td>
-        </tr>
+
+    <h3>source</h3>
+{% with reports = package.get_reports() %}
+    {% include "report_list_fragment.html" %}
+{% endwith %}
+
+{% for binary in package.get_binaries() %}
+    <h3>{{binary.arch}}</h3>
+    {% with reports = binary.get_reports() %}
+        {% include "report_list_fragment.html" %}
+    {% endwith %}
 {% endfor %}
-    </table>
 
     <h2>Jobs</h2>
     <table class = 'zebra'>
@@ -66,21 +50,6 @@ Passed
                     <a href = '/report/{{report._id}}' >{{report.type}}</a>
                 {% endfor %}
             </td>
-        </tr>
-{% endfor %}
-    </table>
-    <h2>Binary Builds</h2>
-    <table class = 'zebra'>
-        <tr>
-            <th>Builder</th>
-            <th>Arch</th>
-            <th>Debs</th>
-        </tr>
-{% for binary in package.get_binaries() %}
-        <tr>
-            <td>{{binary.builder}}</td>
-            <td>{{binary.arch}}</td>
-            <td>{{binary.binaries}}</td>
         </tr>
 {% endfor %}
     </table>
