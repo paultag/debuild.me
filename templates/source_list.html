@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Package List{% endblock %}
+
+{% block content %}
+    <h1>Uploaded Sources</h1>
+
+    <table class = 'zebra'>
+        <tr>
+            <th>What</th>
+            <th>Uploader</th>
+        </tr>
+{% for source in sources %}
+{% with owner = source.get_owner() %}
+        <tr>
+            <td>
+                <a href = '/source/{{source._id}}' >
+                    {{source.source}}/{{source.version}}
+                </a>
+            </td>
+            <td>
+                <a href = '/hacker/{{owner._id}}' >
+                    {{owner.name}}
+                </a>
+            </td>
+        </tr>
+{% endwith %}
+{% endfor %}
+    </table>
+{% endblock %}

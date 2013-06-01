@@ -30,9 +30,17 @@ def index():
     return render_template('about.html')
 
 
+@frontend.route("/sources")
+def source_list():
+    sources = Source.query({})
+    return render_template('source_list.html', **{
+        "sources": sources
+    })
+
+
 @frontend.route("/source/<package_id>")
-def package(package_id):
+def source(package_id):
     package = Source.load(package_id)
-    return render_template('package.html', **{
+    return render_template('source.html', **{
         "package": package
     })

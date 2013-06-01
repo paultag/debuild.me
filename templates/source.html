@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}About{% endblock %}
+
+{% block content %}
+    <h1>Package Report</h1>
+    {{package.source}}/{{package.version}}
+
+    <h2>Reports</h2>
+    <table class = 'zebra'>
+        <tr>
+            <th>What</th>
+            <th>Failed</th>
+            <th>Builder</th>
+        </tr>
+{% for report in package.get_reports() %}
+        <tr>
+            <td>{{report.type}}</td>
+            <td>{{report.failed}}</td>
+            <td>{{report.builder}}</td>
+        </tr>
+{% endfor %}
+    </table>
+
+    <h2>Jobs</h2>
+    <table class = 'zebra'>
+        <tr>
+            <th>Type</th>
+            <th>Arch</th>
+            <th>Suite</th>
+            <th>Builder</th>
+            <th>Assigned at</th>
+            <th>Finished at</th>
+            <th>Reports</th>
+        </tr>
+{% for job in package.get_jobs() %}
+        <tr>
+            <td>{{job.type}}</td>
+            <td>{{job.arch}}</td>
+            <td>{{job.suite}}</td>
+            <td>
+                <a href = '/machine/{{job.builder}}' >{{job.builder}}</a>
+            </td>
+            <td>{{job.assigned_at}}</td>
+            <td>{{job.finished_at}}</td>
+            <td>
+                {% for report in job.get_reports() %}
+                    <a href = '/report/{{report._id}}' >{{report.type}}</a>
+                {% endfor %}
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+    <h2>Binary Builds</h2>
+    <table class = 'zebra'>
+        <tr>
+            <th>Builder</th>
+            <th>Arch</th>
+            <th>Debs</th>
+        </tr>
+{% for binary in package.get_binaries() %}
+        {{binary}}
+        <tr>
+            <td>{{binary.builder}}</td>
+            <td>{{binary.arch}}</td>
+            <td>{{binary.binaries}}</td>
+        </tr>
+{% endfor %}
+    </table>
+
+{% endblock %}
