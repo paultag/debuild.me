@@ -59,7 +59,6 @@
             <th>Debs</th>
         </tr>
 {% for binary in package.get_binaries() %}
-        {{binary}}
         <tr>
             <td>{{binary.builder}}</td>
             <td>{{binary.arch}}</td>
