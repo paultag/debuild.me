@@ -5,21 +5,65 @@
         <link rel="stylesheet" href = "{{ url_for('static', filename='css/debuild.me.css') }}" ></link>
     </head>
     <body>
-        <!--
         <div class = 'header' >
             <div class = 'title' >debuild.me</div>
-            <div class = 'sub-title' >“I never travel without my diary.
-                                       One should always have something
-                                       sensational to read in the train.”</div>
         </div>
-        -->
         <div class = 'container' >
 {% block content %}
 {% endblock %}
         </div>
-<!--
         <div class = 'foot' >
+            <div class = 'main' >
+                <div class = 'fifth' >
+                    <h1>Sitemap</h1>
+                    <ul>
+                        <li><a href = '/sources' >uploads</a></li>
+                        <li><a href = '/' >home</a></li>
+                        <li><a href = '/about' >about</a></li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1>Debian links</h1>
+                    <ul>
+                        <li>
+        <a href = 'https://mentors.debian.net/' >mentors.d.n</a>
+                        </li>
+                        <li>
+        <a href = 'http://www.debian.org/doc/debian-policy/' >policy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1>About</h1>
+                    <ul>
+                        <li>
+        <a href = 'http://pault.ag/' >paul's site</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1>Help</h1>
+                    <ul>
+                        <li>
+        <a href = 'http://trololololololololololo.com/' >documentation</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class = 'fifth' >
+                    <h1>Source Code</h1>
+                    <ul>
+                        <li>
+        <a href = 'https://github.com/paultag/debuild.me' >debuild.me</a>
+                        </li>
+                        <li>
+        <a href = 'https://github.com/paultag/lucy' >lucy</a>
+                        </li>
+                        <li>
+        <a href = 'https://github.com/paultag/ethel' >ethel</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
--->
     </body>
 </html>

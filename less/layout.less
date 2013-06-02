@@ -6,6 +6,7 @@ body, html {
     .cantarell;
     margin:                 0px;
     padding:                0px;
+    height:                 100%;
 }
 
 .box {
@@ -38,35 +39,29 @@ body, html {
 
 .header {
     position:               fixed;
-    height:                 75px;
+    min-height:             75px;
     width:                  100%;
     top:                    0px;
     left:                   0px;
-    border-bottom:          1px solid #CCCCCC;
+    border-bottom:          1px solid #EAEAEA;
     margin-bottom:          50px;
-    box-shadow:             0px 5px 10px #F0F0F0;
+    box-shadow:             0px 5px 10px #F3F3F3;
     padding-top:            10px;
     background-image:       url(../imgs/bg-xp-w.png);
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius:  10px;
 
-    .title, .sub-title {
-        .old-standard;
+    .title {
+        .damion;
+        font-size:          3em;
+        line-height:        45px;
         text-align:         center;
         padding:            0px;
         margin:             0px;
-        line-height:        110%;
-    }
-
-    .title {
-        font-size:          2.3em;
-        line-height:        45px;
-    }
-    .sub-title {
-        line-height:        25px;
     }
 }
 
 .main {
-    margin-top:             120px;
     width:                  700px;
     margin-left:            auto;
     margin-right:           auto;
@@ -74,6 +69,9 @@ body, html {
 
 .container {
     .main;
+    margin-top:             120px;
+    min-height:             70%;
+    background-color:       #FFFFFF;
 }
 
 table {
@@ -115,5 +113,31 @@ h1, h2, h3 {
     font-weight:              normal;
 }
 
+.foot {
+    margin-top:               10%;
+    padding-top:              10px;
+    border-top:               1px solid #CCCCCC;
+    background-color:         #EEEEEE;
+    min-height:               20%;
+    .fifth {
+        ul {
+            list-style-type:  none;
+            padding:          0px;
+            margin:           0px;
+        }
+        width:                20%;
+        float:                left;
+        a {
+            .damion;
+            color:            #333333;
+        }
+        h1 {
+            .damion;
+            font-size:        1.2em;
+            border-bottom:    1px solid #333333;
+            width:            90%;
+        }
+    }
+}
 
 @import "layout.desktop.less";
