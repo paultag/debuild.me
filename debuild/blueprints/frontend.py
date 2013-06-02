@@ -19,8 +19,8 @@
 # DEALINGS IN THE SOFTWARE.
 
 from flask import Blueprint, render_template
+from lucy import Source, Report, Machine, User
 from lucy.core import get_config
-from lucy import Source, Report
 
 from humanize import naturaltime
 from humanize.time import naturaldelta
@@ -80,6 +80,23 @@ def source(package_id):
     package = Source.load(package_id)
     return render_template('source.html', **{
         "package": package
+    })
+
+
+@frontend.route("/machine/<machine_id>")
+def machine(machine_id):
+    machine = Machine.load(machine_id)
+    return render_template('machine.html', **{
+        "machine": machine,
+        "owner": machine.get_owner()
+    })
+
+
+@frontend.route("/hacker/<hacker_id>")
+def hacker(hacker_id):
+    user = User.load(hacker_id)
+    return render_template('hacker.html', **{
+        "hacker": user
     })
 
 

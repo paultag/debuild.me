@@ -1,0 +1,28 @@
+    <table class = 'zebra'>
+        <tr>
+            <th>What</th>
+            <th>Uploader</th>
+            <th>Status</th>
+        </tr>
+{% for source in sources %}
+{% with owner = source.get_owner() %}
+        <tr>
+            <td>
+                <a href = '/source/{{source._id}}' >
+                    {{source.source}}/{{source.version}}
+                </a>
+            </td>
+            <td>
+                <a href = '/hacker/{{owner._id}}' >
+                    {{owner.name}}
+                </a>
+            </td>
+            <td>
+            {% with total, unfinished = source.get_job_status() %}
+                {{unfinished}} / {{total}} remain
+            {% endwith %}
+            </td>
+        </tr>
+{% endwith %}
+{% endfor %}
+    </table>

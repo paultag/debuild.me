@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Hacker{% endblock %}
+
+{% block content %}
+<h1>{{hacker.name}}</h1>
+
+{{hacker.name}}'s GPG key is <code>{{hacker.gpg}}</code>.
+
+{% with sources = hacker.get_uploads() %}
+    {% include "source_list_fragment.html" %}
+{% endwith %}
+
+{% endblock %}
