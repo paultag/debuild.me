@@ -1,4 +1,4 @@
 
 
-__appaname__ = "debuild"
+__appname__ = "debuild"
 __version__ = "0.1"
