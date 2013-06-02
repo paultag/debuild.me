@@ -1,0 +1,23 @@
+    <table class = 'zebra'>
+        <tr>
+            <th>Type</th>
+            <th>Arch</th>
+            <th>Suite</th>
+            <th>Assigned</th>
+            <th>Builder</th>
+        </tr>
+{% for job in jobs %}
+        <tr>
+            <td>{{job.type}}</td>
+            <td>{{job.arch}}</td>
+            <td>{{job.suite}}</td>
+            <td>{{job.assigned_at|ago}}</td>
+            <td>
+                {% if job.builder %}
+                    <a href = '/machine/{{job.builder}}' >{{job.builder}}</a>
+                {% endif %}
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+

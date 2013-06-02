@@ -32,20 +32,7 @@
 {% endfor %}
 
     <h2>Pending Jobs</h2>
-    <table class = 'zebra'>
-        <tr>
-            <th>Type</th>
-            <th>Arch</th>
-            <th>Suite</th>
-            <th>Assigned</th>
-        </tr>
-{% for job in package.get_pending_jobs() %}
-        <tr>
-            <td>{{job.type}}</td>
-            <td>{{job.arch}}</td>
-            <td>{{job.suite}}</td>
-            <td>{{job.assigned_at|ago}}</td>
-        </tr>
-{% endfor %}
-    </table>
+    {% with jobs = package.get_pending_jobs() %}
+        {% include "job_list_fragment.html" %}
+    {% endwith %}
 {% endblock %}

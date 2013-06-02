@@ -19,7 +19,7 @@
 # DEALINGS IN THE SOFTWARE.
 
 from flask import Blueprint, render_template
-from lucy import Source, Report, Machine, User
+from lucy import Source, Report, Machine, User, Job
 from lucy.core import get_config
 
 from humanize import naturaltime
@@ -64,7 +64,10 @@ def location_display(obj):
 
 @frontend.route("/")
 def index():
-    return render_template('about.html')
+    active_jobs = Job.unfinished_jobs()
+    return render_template('about.html', **{
+        "active_jobs": active_jobs
+    })
 
 
 @frontend.route("/sources")

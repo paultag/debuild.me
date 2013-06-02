@@ -5,4 +5,8 @@
 {% block content %}
 Perhaps you're looking for
 <a href = '/sources' >uploads</a>
+
+{% with jobs = active_jobs %}
+    {% include "job_list_fragment.html" %}
+{% endwith %}
 {% endblock %}
