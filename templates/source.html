@@ -31,34 +31,20 @@
     {% endwith %}
 {% endfor %}
 
-    <h2>Jobs</h2>
+    <h2>Pending Jobs</h2>
     <table class = 'zebra'>
         <tr>
             <th>Type</th>
             <th>Arch</th>
             <th>Suite</th>
-            <th>Builder</th>
-            <th>Assigned at</th>
-            <th>Finished at</th>
-            <th>Reports</th>
+            <th>Assigned</th>
         </tr>
-{% for job in package.get_jobs() %}
+{% for job in package.get_pending_jobs() %}
         <tr>
             <td>{{job.type}}</td>
             <td>{{job.arch}}</td>
             <td>{{job.suite}}</td>
-            <td>
-                {% if job.builder %}
-                <a href = '/machine/{{job.builder}}' >{{job.builder}}</a>
-                {% endif %}
-            </td>
             <td>{{job.assigned_at|ago}}</td>
-            <td>{{job.finished_at|ago}}</td>
-            <td>
-                {% for report in job.get_reports() %}
-                    <a href = '/report/{{report._id}}' >{{report.type}}</a>
-                {% endfor %}
-            </td>
         </tr>
 {% endfor %}
     </table>
