@@ -8,6 +8,34 @@ body, html {
     padding:                0px;
 }
 
+.box {
+    margin:                 0.8em;
+    float:                  right;
+    clear:                  both;
+    background-color:       #5c3566;
+    height:                 100px;
+    width:                  100px;
+    font-family:            Georgia;
+    color:                  #FFFFFF;
+    .core {
+        width:              100%;
+        text-align:         center;
+        height:             50%;
+        line-height:        50px;
+    }
+    .element {
+        .core;
+        font-size:          1.1em;
+    }
+    .unfinished {
+        .core;
+        font-size:          2em;
+        .total {
+            font-size:      0.5em;
+        }
+    }
+}
+
 .header {
     position:               fixed;
     height:                 75px;

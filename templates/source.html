@@ -3,12 +3,21 @@
 {% block title %}About{% endblock %}
 
 {% block content %}
+
+{% with total, unfinished = package.get_job_status() %}
+    <div class = 'box' >
+        <div class = 'unfinished' >
+            {{unfinished}}<span class = 'total' >/{{total}}</span>
+        </div>
+        <div class = 'element' >Remain</div>
+    </div>
+{% endwith %}
+
+
     <h1>Package Report</h1>
     The following is information regarding this upload of
     {{package.source}}/{{package.version}}. The following is a list of
     complete reports, pending jobs and completed binary builds.
-
-    <h2>Reports</h2>
 
     <h3>source</h3>
 {% with reports = package.get_reports() %}
@@ -53,5 +62,4 @@
         </tr>
 {% endfor %}
     </table>
-
 {% endblock %}
