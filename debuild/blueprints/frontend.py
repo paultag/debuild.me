@@ -107,7 +107,11 @@ def report(report_id):
     path = os.path.join(config['pool'],
                         report['log_path'])
 
+    log = []
+    if os.path.exists(path):
+        log = (x.decode('utf-8') for x in open(path, 'r'))
+
     return render_template('report.html', **{
         "report": report,
-        "log": (x.decode('utf-8') for x in open(path, 'r')),
+        "log": log,
     })
