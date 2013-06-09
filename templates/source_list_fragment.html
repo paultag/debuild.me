@@ -14,9 +14,11 @@
                 </a>
             </td>
             <td>
+                {% if source.group %}
                 <a href = '/group/{{source.group}}' >
                     {{source.group}}
                 </a>
+                {% endif %}
             </td>
             <td>
                 <a href = '/hacker/{{owner._id}}' >
@@ -24,9 +26,17 @@
                 </a>
             </td>
             <td>
-            {% with total, unfinished = source.get_job_status() %}
-                {{unfinished}} / {{total}} remain
-            {% endwith %}
+            {% for jerb in source.get_all_jobs() %}
+                {% if jerb.is_failed() %}
+                    {% if jerb.is_critical() %}
+                        ☣
+                    {% else %}
+                        ✗
+                    {% endif %}
+                {% else %}
+                    ✓
+                {% endif %}
+            {% endfor %}
             </td>
         </tr>
 {% endwith %}
