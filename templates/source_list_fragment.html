@@ -1,6 +1,7 @@
     <table class = 'zebra'>
         <tr>
             <th>What</th>
+            <th>Group</th>
             <th>Uploader</th>
             <th>Status</th>
         </tr>
@@ -10,6 +11,11 @@
             <td>
                 <a href = '/source/{{source._id}}' >
                     {{source.source}}/{{source.version}}
+                </a>
+            </td>
+            <td>
+                <a href = '/group/{{source.group}}' >
+                    {{source.group}}
                 </a>
             </td>
             <td>

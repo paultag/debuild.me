@@ -73,9 +73,24 @@ def index():
 
 @frontend.route("/sources")
 def source_list():
-    sources = Source.query({})
+    count = 10
+    sources = Source.query({}, sort='updated_at', sort_order=-1, limit=count)
     return render_template('source_list.html', **{
-        "sources": sources
+        "sources": sources,
+        "count": count,
+    })
+
+
+@frontend.route("/group/<group_id>")
+def group_list(group_id):
+
+    sources = Source.query({
+        "group": group_id,
+    }, sort='updated_at', sort_order=-1)
+
+    return render_template('group.html', **{
+        "sources": sources,
+        "group_id": group_id,
     })
 
 
