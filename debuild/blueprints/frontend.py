@@ -66,7 +66,8 @@ def location_display(obj):
 def index():
     active_jobs = Job.unfinished_jobs()
     return render_template('about.html', **{
-        "active_jobs": active_jobs
+        "active_jobs": active_jobs,
+        "machines": Machine.get_builders(),
     })
 
 

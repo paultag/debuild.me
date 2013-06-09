@@ -1,0 +1,23 @@
+    <table class = 'zebra'>
+        <tr>
+            <th>Name</th>
+            <th>Last ping</th>
+            <th>Owner</th>
+            <th>Jobs</th>
+        </tr>
+{% for machine in machines %}
+        <tr>
+            <td><a href = '/machine/{{machine._id}}' >{{machine._id}}</a></td>
+            <td>{{machine.last_ping|ago}}</td>
+            <td>
+                <a href = '/hacker/{{machine.owner}}' >{{machine.owner}}</a>
+            </td>
+            <td>
+                {% for job in machine.get_jobs() %}
+                    <a href = '/job/{{job._id}}' >{{job.type}}</a>
+                {% endfor %}
+            </td>
+        </tr>
+{% endfor %}
+    </table>
+
