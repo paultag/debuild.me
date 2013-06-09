@@ -27,14 +27,18 @@
             </td>
             <td>
             {% for jerb in source.get_all_jobs() %}
-                {% if jerb.is_failed() %}
-                    {% if jerb.is_critical() %}
-                        ☣
-                    {% else %}
-                        ✗
-                    {% endif %}
+                {% if jerb.is_pending() %}
+                    ⧖
                 {% else %}
-                    ✓
+                    {% if jerb.is_failed() %}
+                        {% if jerb.is_critical() %}
+                            ☣
+                        {% else %}
+                            ✗
+                        {% endif %}
+                    {% else %}
+                        ✓
+                    {% endif %}
                 {% endif %}
             {% endfor %}
             </td>
