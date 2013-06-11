@@ -16,4 +16,10 @@ Perhaps you're looking for
 <h1>Builder Status</h1>
 
 {% include "machine_list_fragment.html" %}
+
+<h1>Uploads Pending (managed from Fred)</h1>
+{% with builds = fred_builds %}
+{% include "fred_build_fragment.html" %}
+{% endwith %}
+
 {% endblock %}

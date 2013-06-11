@@ -21,6 +21,7 @@
 from flask import Blueprint, render_template
 from lucy import Source, Report, Machine, User, Job
 from lucy.core import get_config
+from fred import db as fred_db
 
 from humanize import naturaltime
 from humanize.time import naturaldelta
@@ -65,9 +66,11 @@ def location_display(obj):
 @frontend.route("/")
 def index():
     active_jobs = Job.unfinished_jobs()
+    pending = fred_db.builds.find()
     return render_template('about.html', **{
         "active_jobs": active_jobs,
         "machines": Machine.get_builders(),
+        "fred_builds": pending,
     })
 
 

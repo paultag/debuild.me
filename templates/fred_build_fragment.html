@@ -1,0 +1,14 @@
+    <table class = 'zebra'>
+        <tr>
+            <th>Source</th>
+            <th>Version</th>
+            <th>Dist</th>
+        </tr>
+{% for build in builds %}
+        <tr>
+            <td>{{build.source}}</td>
+            <td>{{build.version}}</td>
+            <td>{{build.dist}}</td>
+        </tr>
+{% endfor %}
+    </table>
