@@ -4,9 +4,10 @@
 
 {% block content %}
 <h1>Package Group {{group_id}}</h1>
-    {% if page > 0 %}
-        <a href = '/group/{{group_id}}/{{page - 1}}' >last page</a>
-    {% endif %}
-    <a href = '/group/{{group_id}}/{{page + 1}}' >next page</a>
+{% if page > 0 %}
+    <a class = 'left' href = '/group/{{group_id}}/{{page - 1}}' >last page</a>
+{% endif %}
+    <a class = 'right' href = '/group/{{group_id}}/{{page + 1}}' >next page</a>
+    <div class = 'clear' ></div>
     {% include "source_list_fragment.html" %}
 {% endblock %}

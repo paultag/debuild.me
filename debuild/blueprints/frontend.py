@@ -74,7 +74,7 @@ def index():
     })
 
 
-@frontend.route("/sources")
+@frontend.route("/sources/")
 def source_list():
     count = 10
     sources = Source.query({}, sort='updated_at', sort_order=-1, limit=count)
@@ -84,8 +84,8 @@ def source_list():
     })
 
 
-@frontend.route("/group/<group_id>")
-@frontend.route("/group/<group_id>/<page>")
+@frontend.route("/group/<group_id>/")
+@frontend.route("/group/<group_id>/<page>/")
 def group_list(group_id, page=0):
     page = int(page)
 
@@ -104,7 +104,7 @@ def group_list(group_id, page=0):
     })
 
 
-@frontend.route("/source/<package_id>")
+@frontend.route("/source/<package_id>/")
 def source(package_id):
     package = Source.load(package_id)
     return render_template('source.html', **{
@@ -112,7 +112,7 @@ def source(package_id):
     })
 
 
-@frontend.route("/machine/<machine_id>")
+@frontend.route("/machine/<machine_id>/")
 def machine(machine_id):
     machine = Machine.load(machine_id)
     return render_template('machine.html', **{
@@ -121,7 +121,7 @@ def machine(machine_id):
     })
 
 
-@frontend.route("/hacker/<hacker_id>")
+@frontend.route("/hacker/<hacker_id>/")
 def hacker(hacker_id):
     user = User.load(hacker_id)
     return render_template('hacker.html', **{
@@ -129,7 +129,7 @@ def hacker(hacker_id):
     })
 
 
-@frontend.route("/report/<report_id>")
+@frontend.route("/report/<report_id>/")
 def report(report_id):
     report = Report.load(report_id)
     config = get_config()
