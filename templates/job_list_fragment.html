@@ -5,6 +5,7 @@
             <th>Suite</th>
             <th>Assigned</th>
             <th>Builder</th>
+            <th>Source Package</th>
         </tr>
 {% for job in jobs %}
         <tr>
@@ -16,6 +17,11 @@
                 {% if job.builder %}
                     <a href = '/machine/{{job.builder}}' >{{job.builder}}</a>
                 {% endif %}
+            </td>
+            <td>
+                {% with package = job.get_source() %}
+                    <a href = '/source/{{package._id}}' >{{package.source}}</a>
+                {% endwith %}
             </td>
         </tr>
 {% endfor %}
