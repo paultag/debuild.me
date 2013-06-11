@@ -82,15 +82,22 @@ def source_list():
 
 
 @frontend.route("/group/<group_id>")
-def group_list(group_id):
+@frontend.route("/group/<group_id>/<page>")
+def group_list(group_id, page=0):
+    page = int(page)
 
-    sources = Source.query({
-        "group": group_id,
-    }, sort='updated_at', sort_order=-1)
+    sources = Source.query(
+        { "group": group_id, },
+        sort='updated_at',
+        sort_order=1,
+        page_count=15,
+        page=page
+    )
 
     return render_template('group.html', **{
         "sources": sources,
         "group_id": group_id,
+        "page": page,
     })
 
 
