@@ -1,0 +1,53 @@
+What is required to install debuild.me.
+So that may become some hints to create the package.
+This not an "INSTALL" file as I hope we'll never have to install the system 
+like this...
+And I use virtualenvwrapper here for my sanity, preferably replaced in 
+production by installing the debian packages instead of using pip
+
+System : fresh wheezy, up to date on 04 Jul 2013.
+
+Must be installed after lucy !
+#FIXME or WONTFIX ? must be on the same machine than lucy and the pool
+
+(lucy)
+* Fetch the repo of ethel
+    cd ~ && git clone https://github.com/paultag/debuild.me.git
+
+(lucy) virtualenv=lucy
+* Install debuildme dependancies
+    cd ~/debuild.me
+    pip install -r requirements.txt
+
+(debuildme) virtualenv=debuildme
+* Install fred dependancy
+    cd ~ && git clone https://github.com/paultag/fred.git
++ PATCH fred/__init__.py for right mongo address
+    python setup.py develop
+
+* Render the templates
+For now no packages for npm node.js so...
+(root)
+    cd ~/custom
+    apt-get install curl build-essential openssl libssl-dev
+    git clone https://github.com/joyent/node.git
+    cd node
+    git checkout v0.10
+    ./configure --openssl-libpath=/usr/lib/ssl
+    make
+    make install
+    npm install -g less
+(lucy) virtualenv=lucy
+    cd ~/debuild.me
+    make
+
+(root)
+* To run the webserver as debuildme on port 80, we redirect flask port
+    iptables -A PREROUTING -t nat -p tcp --dport 80 -j REDIRECT --to-port 5000
+
+(lucy) virtualenv=lucy
+* Run the web UI !
+    cd ~/debuild.me
++ PATCH app.py : app.run(host="0.0.0.0",debug=True)
+    python app.py
+
