@@ -18,7 +18,7 @@
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 # DEALINGS IN THE SOFTWARE.
 
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, send_file
 from lucy import Source, Report, Machine, User, Job
 from lucy.core import get_config
 from fred import db as fred_db
@@ -133,14 +133,39 @@ def hacker(hacker_id):
 def report(report_id):
     report = Report.load(report_id)
     config = get_config()
-    path = os.path.join(config['pool'],
+    log_path = os.path.join(config['pool'],
                         report['log_path'])
 
+    flink = "/report/firehose/%s/" % report_id
+    loglink = "/report/log/%s/" % report_id
+
     log = []
-    if os.path.exists(path):
-        log = (x.decode('utf-8') for x in open(path, 'r'))
+    if os.path.exists(log_path):
+        log = (x.decode('utf-8') for x in open(log_path, 'r'))
 
     return render_template('report.html', **{
+        "log_link": loglink,
+        "firehose_link": flink,
         "report": report,
         "log": log,
     })
+
+@frontend.route("/report/firehose/<report_id>/")
+def report_firehose(report_id):
+    report = Report.load(report_id)
+    config = get_config()
+    firehose_path = os.path.join(config['pool'],
+                        report['firehose_path'])
+
+    if os.path.exists(firehose_path):
+        return send_file(firehose_path, mimetype='application/xml', as_attachment=True, attachment_filename='firehose.xml')
+
+@frontend.route("/report/log/<report_id>/")
+def report_log(report_id):
+    report = Report.load(report_id)
+    config = get_config()
+    log_path = os.path.join(config['pool'],
+                        report['log_path'])
+
+    if os.path.exists(log_path):
+        return send_file(log_path, mimetype='text/plain', as_attachment=True, attachment_filename='log.txt')
