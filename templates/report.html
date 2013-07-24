@@ -13,6 +13,7 @@ This report was created {{report.created_at|ago}}.
 {% if report.failed %}
 This report has <b>FAILED</b>.
 {% endif %}
+<p>Download : <a href="{{firehose_link}}">XML firehose report</a> | <a href="{{log_link}}">raw log</a></p>
 
 {% if report.report.metadata.stats %}
     This run took
